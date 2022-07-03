@@ -32,3 +32,10 @@ export interface UserItemProps {
 	title: string;
 	body: string;
 }
+
+export interface Bookmark {
+	userId: number;
+	id: number;
+	name: string;
+	// url: string;
+}
