@@ -1,4 +1,5 @@
 import React, { FC, useState } from 'react';
+
 import { styled, alpha } from '@mui/material/styles';
 import {
 	AppBar,
@@ -78,7 +79,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 const Header: FC = () => {
 	const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
-	const [bookmarkModalOpen, setBookmarkModalOpen] = useState<boolean>(false);
+	const [addBookmarkOpen, setAddBookmarkOpen] = useState<boolean>(false);
 	// const [searchBookmark, setSearchBookmark] = useState<string | undefined>();
 
 	// const searchBookmarks = (event: any) => {
@@ -87,10 +88,10 @@ const Header: FC = () => {
 	// };
 
 	const toggleModal = () => {
-		setBookmarkModalOpen((modalOpen) => !modalOpen);
+		setAddBookmarkOpen((addBookmarkOpen) => !addBookmarkOpen);
 	};
 	const bookmarkModalClose = () => {
-		setBookmarkModalOpen(false);
+		setAddBookmarkOpen(false);
 	};
 
 	const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -98,7 +99,13 @@ const Header: FC = () => {
 	};
 
 	const handleMenuClose = () => {
+		// If addBookmarkOpen that Menu closed
+		// if (addBookmarkOpen === true) {
+		// 	anchorElNav();
+		// }
+		// =======
 		setAnchorElNav(null);
+		// setAddBookmarkOpen(false);
 	};
 
 	const mobileSearchId = 'primary-search-account-menu-mobile';
@@ -176,8 +183,8 @@ const Header: FC = () => {
 						{/* Bookmark Modal Card */}
 						<AddBookmark
 							anchorElNav={anchorElNav}
-							bookmarkModalOpen={bookmarkModalOpen}
-							setBookmarkModalOpen={setBookmarkModalOpen}
+							addBookmarkOpen={addBookmarkOpen}
+							setAddBookmarkOpen={setAddBookmarkOpen}
 							onClose={bookmarkModalClose}
 						/>
 						<MenuItem

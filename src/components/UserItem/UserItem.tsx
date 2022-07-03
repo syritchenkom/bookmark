@@ -15,12 +15,19 @@ import MoreIcon from '@mui/icons-material/MoreVert';
 import DriveFileIcon from '@mui/icons-material/InsertDriveFileOutlined';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/store';
 
 // interface UserItemProps {
 // 	posts: IPost[];
 // }
 
 const UserItem: FC = () => {
+	// const bookmark = useSelector(se)
+	// const dispatch = useDispatch();
+	const newBookmark = useSelector((state: RootState) => state.bookmark);
+	console.log('newBookmarks', newBookmark);
+
 	const [bookmarks, setBookmarks] = useState<UserItemProps[]>([]);
 	const [bookMenu, setBookMenu] = useState<null | HTMLElement>(null);
 
@@ -30,7 +37,7 @@ const UserItem: FC = () => {
 
 	useEffect(() => {
 		fetchUserItem();
-	}); //}, []);
+	}, []); //}, []);
 
 	async function fetchUserItem() {
 		try {
@@ -42,6 +49,7 @@ const UserItem: FC = () => {
 			alert(error);
 		}
 	}
+
 	const open = Boolean(bookMenu);
 
 	const handleBookClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -62,6 +70,7 @@ const UserItem: FC = () => {
 				}}>
 				<TableBody>
 					{/* Data from jsonplaceholder.typicode.com */}
+					{/* {newBookmark} */}
 					{bookmarks.map((bookmark) => (
 						<TableRow
 							hover
@@ -80,6 +89,7 @@ const UserItem: FC = () => {
 								scope="row">
 								<DriveFileIcon sx={{ marginRight: '1rem' }} />
 								{bookmark.title}
+								{bookmark.body}
 							</TableCell>
 							<TableCell sx={{ flexGrow: 1 }} />
 							<TableCell

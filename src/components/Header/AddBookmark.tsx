@@ -9,12 +9,14 @@ import {
 	TextField,
 	Button
 } from '@mui/material';
+import { useAppDispatch, useAppSelector } from '../../redux/store';
+// import { addBookmark } from '../../redux/bookmarks/slice';
 // import { title } from 'pr
 
-interface ModalDialogProps {
+interface AddBookmarkProps {
 	anchorElNav: null | HTMLElement;
-	bookmarkModalOpen: any;
-	setBookmarkModalOpen: any;
+	addBookmarkOpen: any;
+	setAddBookmarkOpen: any;
 	onClose: (value: string) => void;
 }
 
@@ -31,21 +33,32 @@ const style = {
 	p: 4
 };
 
-const ModalCard: FC<ModalDialogProps> = ({
+const AddBookmark: FC<AddBookmarkProps> = ({
 	anchorElNav,
-	bookmarkModalOpen,
-	setBookmarkModalOpen,
+	addBookmarkOpen,
+	setAddBookmarkOpen,
 	onClose
 }) => {
+	const bookmarks = useAppSelector((state) => state.bookmark);
+	// console.log('bookmarks', bookmarks);
+	const dispatch = useAppDispatch();
+
 	const handleClose = () => {
-		setBookmarkModalOpen(false);
+		setAddBookmarkOpen(false);
 	};
 
 	const onSubmitForm = (event: any) => {
 		event.preventDefault();
-		console.log('event', event);
-		console.log('event', event.target[0].value);
-		console.log('event', event.target[1].value);
+		// dispatch(
+		// 	addBookmark({
+		// 		// userId: event.target,
+		// 		// id: event.target,
+		// 		name: event.target[0].value,
+		// 		url: event.target[1].value
+		// 	})
+		// );
+		setAddBookmarkOpen(false);
+		console.log('bookmark', bookmarks);
 	};
 	// 	//cancel default value
 	// 	event.preventDefault();
@@ -53,7 +66,7 @@ const ModalCard: FC<ModalDialogProps> = ({
 	// 	if (bookmarkModalOpen === '') return;
 	// 	//here create list!!!
 	// 	if (anchorElNav === null) {
-	// 		setBookmarkModalOpen([
+	// 		setAddBookmarkOpen([
 	// 			...bookmarkModalOpen,
 	// 			// add property
 	// 			{ title: bookmarkModalOpen, id: Math.random() * 1000 }
@@ -64,7 +77,7 @@ const ModalCard: FC<ModalDialogProps> = ({
 	return (
 		<>
 			<Modal
-				open={bookmarkModalOpen}
+				open={addBookmarkOpen}
 				onClose={onClose}
 				aria-labelledby="modal-modal-title"
 				aria-describedby="modal-modal-description">
@@ -83,8 +96,6 @@ const ModalCard: FC<ModalDialogProps> = ({
 								name="name"
 								variant="filled"
 								autoComplete="name"
-								// value={value}
-								// onChange={handleChange}
 								autoFocus
 							/>
 						</FormControl>
@@ -116,4 +127,4 @@ const ModalCard: FC<ModalDialogProps> = ({
 	);
 };
 
-export default ModalCard;
+export default AddBookmark;
