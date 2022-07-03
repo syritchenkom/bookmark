@@ -1,32 +1,27 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Home from './pages/Home/Home';
-// import MenuList from './components/MenuList/MenuList';
 import UserItem from './components/UserItem/UserItem';
-import Header from './components/Header/Header';
-// import './App.css';
+// import MainLayout from './components/layouts/MainLayout';
 
 const App = () => {
 	return (
-		<>
-			<Header />
-			<Routes>
-				<Route path="/" element={<Home />}>
-					<Route path=":userId" element={<UserItem />}>
-						<Route
-							index
-							element={
-								<main style={{ padding: '1rem' }}>
-									<p>Select an invoice</p>
-								</main>
-							}
-						/>
-					</Route>
+		<Routes>
+			<Route path="/" element={<Home />}>
+				<Route path=":userId" element={<UserItem />}>
+					<Route
+						index
+						element={
+							<div style={{ padding: '1rem' }}>
+								<p>Select an invoice</p>
+							</div>
+						}
+					/>
 				</Route>
 				<Route
 					path="*"
 					element={
-						<main
+						<div
 							style={{
 								display: 'flex',
 								justifyContent: 'center',
@@ -37,11 +32,11 @@ const App = () => {
 							// className="nothingClass"
 						>
 							<p>There's nothing here!</p>
-						</main>
+						</div>
 					}
 				/>
-			</Routes>
-		</>
+			</Route>
+		</Routes>
 	);
 };
 
