@@ -1,5 +1,4 @@
 import React, { FC, useEffect, useState } from 'react';
-// import { MenuListProps } from '../../types/types';
 import {
 	List,
 	ListItemButton,
@@ -7,53 +6,24 @@ import {
 	ListItemText
 } from '@mui/material';
 import { Folder } from '@mui/icons-material';
-import axios from 'axios'; //
 import { NavLink } from 'react-router-dom';
 
-import { useSelector } from 'react-redux';
+//import { useSelector } from 'react-redux';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
-import { selectFolderData } from '../../redux/folder/selectors';
 import { fetchFolders } from '../../redux/folder/asyncActions';
-
-// interface MenuListProps {
-// 	folders: IUser[];
-// }
 
 const MenuList: FC = () => {
 	const [open] = useState(false);
-	// const [folders, setFolders] = useState<MenuListProps[]>([]);
-	// const { userId } = useParams();
 
 	const dispatch = useAppDispatch();
 	const folders = useAppSelector(({ folder }) => folder.folders);
-
-	// const { items, status } = useSelector(selectFolderData);
 
 	useEffect(() => {
 		if (!folders?.length) {
 			dispatch(fetchFolders());
 		}
 	}, [dispatch, folders?.length]);
-	// ==== don't need
-	// async function fetchMenuUsers() {
-	// 	try {
-	// 		const response = await axios.get(
-	// 			'https://jsonplaceholder.typicode.com/users'
-	// 		);
-	// 		setFolders(response.data);
-	// 	} catch (error) {
-	// 		alert(error);
-	// 	}
-	// }
 
-	/* 	const handleClick = (
-		event: React.MouseEvent<HTMLDivElement, MouseEvent>
-		// index: number
-	) => {
-		// setSelectedButton(true);
-		setOpen(!open);
-	}; */
-	// ==== end dont need
 	return (
 		<List
 			sx={{
