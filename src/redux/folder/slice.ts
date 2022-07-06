@@ -12,6 +12,8 @@ export const folderSlice = createSlice({
   initialState,
   reducers: {
    setFolders(state, action: PayloadAction<Folder[]>){
+ 			console.log('action.payload setFolders', action.payload);
+
     state.folders = action.payload;
    }
   },
