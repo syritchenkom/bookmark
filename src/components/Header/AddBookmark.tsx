@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 
 import {
 	Modal,
@@ -9,12 +9,13 @@ import {
 	TextField,
 	Button
 } from '@mui/material';
-import { useAppDispatch, useAppSelector } from '../../redux/store';
-// import { addBookmark } from '../../redux/bookmarks/slice';
-// import { title } from 'pr
+
+import { useAppDispatch } from '../../redux/store';
+// import { nanoid } from '@reduxjs/toolkit';
+import { addBookmark } from '../../redux/bookmark/slice';
+import { useParams } from 'react-router-dom';
 
 interface AddBookmarkProps {
-	anchorElNav: null | HTMLElement;
 	addBookmarkOpen: any;
 	setAddBookmarkOpen: any;
 	onClose: (value: string) => void;
@@ -34,46 +35,43 @@ const style = {
 };
 
 const AddBookmark: FC<AddBookmarkProps> = ({
-	anchorElNav,
 	addBookmarkOpen,
 	setAddBookmarkOpen,
 	onClose
 }) => {
-	const bookmarks = useAppSelector((state) => state.bookmark);
-	// console.log('bookmarks', bookmarks);
+	const [title, setTitle] = useState('');
+	const [body, setBody] = useState('');
+
 	const dispatch = useAppDispatch();
+
+	const { userId } = useParams();
+
+	const onTitleChanged = (e: any) => setTitle(e.target.value);
+	const onBodyChange = (e: any) => setBody(e.target.value);
 
 	const handleClose = () => {
 		setAddBookmarkOpen(false);
 	};
 
-	const onSubmitForm = (event: any) => {
-		event.preventDefault();
-		// dispatch(
-		// 	addBookmark({
-		// 		// userId: event.target,
-		// 		// id: event.target,
-		// 		name: event.target[0].value,
-		// 		url: event.target[1].value
-		// 	})
-		// );
+	const canSave = Boolean(title) && Boolean(body);
+
+	const onSaveBookmarkClicked = (e: any) => {
+		e.preventDefault();
+		if (title && body) {
+			dispatch(
+				addBookmark({
+					userId: Number(userId),
+					id: Number(Math.random()),
+					title,
+					body
+				})
+			);
+			setTitle('');
+			setBody('');
+		}
 		setAddBookmarkOpen(false);
-		console.log('bookmark', bookmarks);
 	};
-	// 	//cancel default value
-	// 	event.preventDefault();
-	// 	//canceled information about input if he empty
-	// 	if (bookmarkModalOpen === '') return;
-	// 	//here create list!!!
-	// 	if (anchorElNav === null) {
-	// 		setAddBookmarkOpen([
-	// 			...bookmarkModalOpen,
-	// 			// add property
-	// 			{ title: bookmarkModalOpen, id: Math.random() * 1000 }
-	// 		]);
-	// 		anchorElNav();
-	// 	}
-	// };
+
 	return (
 		<>
 			<Modal
@@ -85,38 +83,47 @@ const AddBookmark: FC<AddBookmarkProps> = ({
 					<Typography id="modal-modal-title" variant="h6" component="h6">
 						Add bookmark
 					</Typography>
-					<form onSubmit={onSubmitForm}>
-						<InputLabel shrink htmlFor="name">
-							Name
+					{/* <form onSubmit={onSubmitForm}> */}
+					<form>
+						<InputLabel shrink htmlFor="postTitle">
+							Title
 						</InputLabel>
 						<FormControl fullWidth required variant="standard">
 							<TextField
 								type="text"
-								id="name"
-								name="name"
+								id="postTitle"
+								name="postTitle"
 								variant="filled"
-								autoComplete="name"
+								autoComplete="title"
 								autoFocus
+								value={title}
+								onChange={onTitleChanged}
 							/>
 						</FormControl>
 						<Box mt={2} />
-						<InputLabel shrink htmlFor="url">
-							Url
+						<InputLabel shrink htmlFor="postBody">
+							Body
 						</InputLabel>
 						<FormControl fullWidth variant="standard">
 							<TextField
 								type="text"
-								id="url"
-								name="url"
+								id="postBody"
+								name="postBody"
 								variant="filled"
-								autoComplete="url"
+								autoComplete="body"
+								value={body}
+								onChange={onBodyChange}
 							/>
 						</FormControl>
 						<Box mt={2} sx={{ float: 'right' }}>
 							<Button type="button" onClick={handleClose}>
 								Cancel
 							</Button>
-							<Button type="submit" variant="contained">
+							<Button
+								type="submit"
+								variant="contained"
+								onClick={onSaveBookmarkClicked}
+								disabled={!canSave}>
 								Save
 							</Button>
 						</Box>
