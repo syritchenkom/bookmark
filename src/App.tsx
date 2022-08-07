@@ -7,6 +7,7 @@ import UserItem from './components/UserItem/UserItem';
 const App = () => {
 	return (
 		<Routes>
+			{/* https://codesandbox.io/s/cool-rubin-vwsp36?file=/src/App.js => Link to route*/}
 			<Route path="/" element={<Home />}>
 				<Route path=":userId" element={<UserItem />}>
 					<Route
