@@ -87,7 +87,7 @@ const Header: FC = () => {
 	// 	setSearchBookmark(value)
 	// };
 
-	const toggleModal = () => {
+	const addNewBookmark = () => {
 		setAddBookmarkOpen((addBookmarkOpen) => !addBookmarkOpen);
 	};
 	const bookmarkModalClose = () => {
@@ -179,10 +179,9 @@ const Header: FC = () => {
 							Sort by name
 						</MenuItem>
 						{/* Add new Bookmark */}
-						<MenuItem onClick={toggleModal}>Add new Bookmark</MenuItem>
-						{/* Bookmark Modal Card */}
+						<MenuItem onClick={addNewBookmark}>Add new Bookmark</MenuItem>
+						{/* Add Bookmark Modal Card */}
 						<AddBookmark
-							anchorElNav={anchorElNav}
 							addBookmarkOpen={addBookmarkOpen}
 							setAddBookmarkOpen={setAddBookmarkOpen}
 							onClose={bookmarkModalClose}
@@ -191,7 +190,7 @@ const Header: FC = () => {
 							divider
 							// onClick={handleProfileMenuOpen}
 						>
-							Add new folder
+							Add new Folder
 						</MenuItem>
 						<MenuItem
 						// onClick={handleProfileMenuOpen}
