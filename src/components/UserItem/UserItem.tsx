@@ -1,4 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+
 import {
 	Table,
 	TableBody,
@@ -13,13 +15,14 @@ import {
 import MoreIcon from '@mui/icons-material/MoreVert';
 import DriveFileIcon from '@mui/icons-material/InsertDriveFileOutlined';
 
-import { useParams } from 'react-router-dom';
-
 import { useAppDispatch, useAppSelector } from '../../redux/store';
 import { fetchBookmarks } from '../../redux/bookmark/asyncActions';
+import RenameBookmark from './RenameBookmark';
+// import { deleteBookmark } from '../../redux/bookmark/slice';
 
 const UserItem: FC = () => {
 	const [bookMenu, setBookMenu] = useState<null | HTMLElement>(null);
+	const [renameBookmarkOpen, setRenameBookmarkOpen] = useState<boolean>(false);
 
 	// const params = useParams();
 	// const userId = params.userId
@@ -27,7 +30,8 @@ const UserItem: FC = () => {
 
 	const dispatch = useAppDispatch();
 	const bookmarks = useAppSelector(({ bookmark }) => bookmark.bookmarks);
-	// const newBookmark = useSelector((state: RootState) => state.bookmark);
+	// console.log('bookmarks', bookmarks);
+	const newBookmark = useAppSelector((state) => state.bookmark.bookmarks);
 
 	useEffect(() => {
 		dispatch(fetchBookmarks({ userId }));
@@ -43,6 +47,16 @@ const UserItem: FC = () => {
 		setBookMenu(null);
 	};
 
+	const renameBookmarkElement = () => {
+		setRenameBookmarkOpen((renameBookmarkOpen) => !renameBookmarkOpen);
+	};
+
+	const bookmarkModalClose = () => {
+		setRenameBookmarkOpen(false);
+	};
+
+	const deleteBookmarkItem = () => {};
+
 	return (
 		<TableContainer component={Paper} sx={{ marginTop: '6rem' }}>
 			<Table
@@ -53,8 +67,8 @@ const UserItem: FC = () => {
 				}}>
 				<TableBody>
 					{/* Data from jsonplaceholder.typicode.com */}
-					{console.log('bookmarks', bookmarks)}
 					{bookmarks ? (
+						newBookmark &&
 						bookmarks.map((bookmark) => (
 							<TableRow
 								hover
@@ -72,8 +86,8 @@ const UserItem: FC = () => {
 									component="th"
 									scope="row">
 									<DriveFileIcon sx={{ marginRight: '1rem' }} />
-									{bookmark.title}
-									{bookmark.body}
+									Title: {bookmark.title} <br />
+									Body: {bookmark.body}
 								</TableCell>
 								<TableCell sx={{ flexGrow: 1 }} />
 								<TableCell
@@ -82,40 +96,48 @@ const UserItem: FC = () => {
 										display: 'flex'
 									}}>
 									<IconButton
-										size="small"
-										id="menu-button"
-										title="Menu Item"
 										aria-label="more"
-										aria-controls={open ? 'menu-bookmark' : undefined}
+										id="long-button"
+										aria-controls={open ? 'long-menu' : undefined}
 										aria-expanded={open ? 'true' : undefined}
 										aria-haspopup="true"
-										onClick={handleBookClick}
-										// color="inherit"
-									>
+										onClick={handleBookClick}>
 										<MoreIcon />
 									</IconButton>
 									<Menu
-										id="menu-bookmark"
-										// MenuListProps={{ 'aria-labelledby': 'menu-button' }}
+										sx={{
+											boxShadow: 'none'
+										}}
+										anchorEl={bookMenu}
 										anchorOrigin={{
 											vertical: 'top',
 											horizontal: 'right'
 										}}
+										id="menu-bookmark"
+										keepMounted
 										transformOrigin={{
 											vertical: 'top',
 											horizontal: 'right'
 										}}
-										anchorEl={bookMenu}
 										open={open}
 										onClose={handleBookClose}>
-										<MenuItem
-										// onClick={handleProfileMenuOpen}
-										>
-											Rename
-										</MenuItem>
+										<MenuItem onClick={renameBookmarkElement}>Rename</MenuItem>
+										{/* Rename Bookmark Modal Card */}
+										<RenameBookmark
+											renameBookmarkOpen={renameBookmarkOpen}
+											setRenameBookmarkOpen={setRenameBookmarkOpen}
+											onClose={bookmarkModalClose}
+										/>
 										<MenuItem
 											divider
-											// onClick={handleProfileMenuOpen}
+											onClick={deleteBookmarkItem}
+											// onClick={() => {
+											// 	dispatch(
+											// 		deleteBookmark({
+											// 			// console.log(userId);
+											// 		}
+											// 	);
+											// }}
 										>
 											Delete
 										</MenuItem>
