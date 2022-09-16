@@ -1,12 +1,11 @@
 import React from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import Home from './pages/Home/Home';
-import UserItem from './components/BookmarkList/UserItem';
+import UserItem from './components/BookmarkList/BookmarkList';
 // import MainLayout from './components/layouts/MainLayout';
 
 const App = () => {
 	return (
-		// https://codesandbox.io/s/cool-rubin-vwsp36?file=/src/App.js => Link to route
 		<Routes>
 			<Route path="/" element={<Home />}>
 				<Route
