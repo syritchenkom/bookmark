@@ -5,9 +5,10 @@ import bookmark from './bookmark/slice';
 
 export const store = configureStore({
   reducer: {
-    // bookmarkStore: bookmarkReducer
     folder,
-    bookmark
+    bookmark,
+    // bookmarkStore: bookmarkReducer
+
   },
 });
 
