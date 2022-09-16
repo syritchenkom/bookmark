@@ -16,6 +16,7 @@ import {
 import SearchIcon from '@mui/icons-material/Search';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import GoogleLogo from '../../assets/logo/googleLogo.png';
+import AddFolder from './AddFolder';
 import AddBookmark from './AddBookmark';
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
@@ -79,6 +80,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 const Header: FC = () => {
 	const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
+	const [addFolderOpen, setAddFolderOpen] = useState<boolean>(false);
 	const [addBookmarkOpen, setAddBookmarkOpen] = useState<boolean>(false);
 	// const [searchBookmark, setSearchBookmark] = useState<string | undefined>();
 
@@ -87,23 +89,30 @@ const Header: FC = () => {
 	// 	setSearchBookmark(value)
 	// };
 
+	// Add New Folder
+	const addNewFolder = () => {
+		setAddFolderOpen((addFolderOpen) => !addFolderOpen);
+	};
+	const folderModalClose = () => {
+		setAddFolderOpen(false);
+	};
+	// Add New Bookmark
 	const addNewBookmark = () => {
 		setAddBookmarkOpen((addBookmarkOpen) => !addBookmarkOpen);
 	};
 	const bookmarkModalClose = () => {
 		setAddBookmarkOpen(false);
 	};
-
+	// Handle Menu Open
 	const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
 		setAnchorElNav(event.currentTarget);
 	};
-
+	// Handle Menu Closed
 	const handleMenuClose = () => {
 		// If addBookmarkOpen that Menu closed
 		// if (addBookmarkOpen === true) {
 		// 	anchorElNav();
-		// }
-		// =======
+		// } =======
 		setAnchorElNav(null);
 		// setAddBookmarkOpen(false);
 	};
@@ -150,7 +159,7 @@ const Header: FC = () => {
 				<Box sx={{ display: { xs: 'flex' } }}>
 					<IconButton
 						size="large"
-						title="Menu"
+						title="header menu"
 						aria-label="show more"
 						aria-controls="menu-bookmark"
 						aria-haspopup="true"
@@ -186,12 +195,15 @@ const Header: FC = () => {
 							setAddBookmarkOpen={setAddBookmarkOpen}
 							onClose={bookmarkModalClose}
 						/>
-						<MenuItem
-							divider
-							// onClick={handleProfileMenuOpen}
-						>
+						{/* Add new Folder */}
+						<MenuItem divider onClick={addNewFolder}>
 							Add new Folder
 						</MenuItem>
+						<AddFolder
+							addFolderOpen={addFolderOpen}
+							setAddFolderOpen={setAddFolderOpen}
+							onClose={folderModalClose}
+						/>
 						<MenuItem
 						// onClick={handleProfileMenuOpen}
 						>
