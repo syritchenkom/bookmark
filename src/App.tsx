@@ -1,7 +1,7 @@
 import React from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import Home from './pages/Home/Home';
-import UserItem from './components/BookmarkList/BookmarkList';
+import BookmarkList from './components/BookmarkList/BookmarkList';
 
 const App = () => {
 	return (
@@ -26,7 +26,7 @@ const App = () => {
 						</div>
 					}
 				/>
-				<Route path=":userId" element={<UserItem />} />
+				<Route path=":userId" element={<BookmarkList />} />
 				{/* <Route path="*" element={<Navigate to="/" replace />} /> */}
 				<Route
 					path="*"
