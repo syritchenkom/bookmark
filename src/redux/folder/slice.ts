@@ -12,9 +12,12 @@ export const folderSlice = createSlice({
   initialState,
   reducers: {
    setFolders(state, action: PayloadAction<Folder[]>){
- 			console.log('action.payload setFolders', action.payload);
+ 		console.log('action.payload setFolders', action.payload);
 
     state.folders = action.payload;
+   },
+   addFolder(state, action: PayloadAction<Folder>){
+    state.folders.push({...action.payload});
    }
   },
   extraReducers: (builder) => {
@@ -36,6 +39,6 @@ export const folderSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { setFolders } = folderSlice.actions
+export const { setFolders, addFolder } = folderSlice.actions
 
 export default folderSlice.reducer
