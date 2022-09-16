@@ -9,7 +9,7 @@ import { fetchBookmarks,
 
 const initialState: BookmarkSliceState = {
 	bookmarks: [],
-	status: Status.LOADING,
+	status: Status.LOADING, // loading | success | error
 
 };
 
@@ -36,25 +36,12 @@ export const bookmarkSlice = createSlice({  //postsSlice
 				existingBookmark.body = body;
 			}
 		},
-		/* renameBookmark (state, action: PayloadAction<Bookmark>){
-			if(!action.payload?.id){
-				console.log('update could not complete')
-				console.log(action.payload);
-				return;
-			}
-			const {id} = action.payload;
-			const bookmarks = state.bookmarks.filter(bookmark => bookmark.id !== id);
-			state.bookmarks = [...bookmarks, action.payload]
-		}, */
 		deleteBookmark: (state, action: PayloadAction <Bookmark>) => {
 			const {id} = action.payload;
-			// const checkedBookmark = state.bookmarks.find(bookmark => bookmark.id === id);
-			// if(checkedBookmark){
-			// 	return state.bookmarks.filter(bookmark => bookmark.id !== id);
-			// }
-			state.bookmarks.filter(bookmark => bookmark.id !== id);
-			state.bookmarks = state.bookmarks.filter((bookmark) => bookmark.id !== action.payload.id)
-			
+			const existingBookmark = state.bookmarks.find(bookmark => bookmark.id === id);
+			if(existingBookmark){
+				state.bookmarks = state.bookmarks.filter((bookmark) => bookmark.id !== id)
+			}			
 		},
 	},
 	extraReducers: (builder) => {
