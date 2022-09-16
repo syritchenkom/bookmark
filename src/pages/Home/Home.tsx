@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Grid, Container } from '@mui/material';
 
-import MenuList from '../../components/MenuList/MenuList';
+import FolderList from '../../components/FolderList/FolderList';
 import Header from '../../components/Header/Header';
 // import UserItem from '../../components/UserItem/UserItem';
 
@@ -13,7 +13,7 @@ const Home: FC = () => {
 				<Header />
 				<Container
 					sx={{ display: 'flex', margin: '0', padding: '0', paddingLeft: '0' }}>
-					<MenuList />
+					<FolderList />
 					<Outlet />
 				</Container>
 			</Grid>
