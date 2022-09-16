@@ -24,7 +24,7 @@ export const renameBookmark = createAsyncThunk('bookmark/renameBookmark', async 
 	}
 })
 
-export const deleteBookmark = createAsyncThunk('bookmark/deleteBookmark', async (params: {userId: string | undefined}) => {
+export const deleteBookmark = createAsyncThunk('bookmark/deleteBookmark', async (params: {userId: number | undefined}) => {
 	const {userId} = params;
 	// console.log("userId", userId)
 	const {data} = await axios.delete<Bookmark[]>(
