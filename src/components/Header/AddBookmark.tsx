@@ -124,7 +124,7 @@ const AddBookmark: FC<AddBookmarkProps> = ({
 								variant="contained"
 								onClick={onSaveBookmarkClicked}
 								disabled={!canSave}>
-								Save
+								Add bookmark
 							</Button>
 						</Box>
 					</form>
