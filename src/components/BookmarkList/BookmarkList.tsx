@@ -24,6 +24,8 @@ import { deleteBookmark } from '../../redux/bookmark/slice';
 const BookmarkList: FC = () => {
 	const [bookMenu, setBookMenu] = useState<null | HTMLElement>(null);
 	const [renameBookmarkOpen, setRenameBookmarkOpen] = useState<boolean>(false);
+	// const [activeBookmark, setActiveBookmark] = useState(bookmarks[0]);
+
 	// console.log('activeBookmark', activeBookmark);
 
 	// const params = useParams();
@@ -33,6 +35,7 @@ const BookmarkList: FC = () => {
 	const dispatch = useAppDispatch();
 	const bookmarks = useAppSelector(({ bookmark }) => bookmark.bookmarks);
 	const [activeBookmark, setActiveBookmark] = useState(bookmarks[0]);
+	const searchBook = useAppSelector(({ bookmark }) => bookmark.searchValue);
 
 	useEffect(() => {
 		dispatch(fetchBookmarks({ userId }));
@@ -81,6 +84,7 @@ const BookmarkList: FC = () => {
 				}}>
 				<TableBody>
 					{/* Data from jsonplaceholder.typicode.com */}
+					{/* {bookmarks.length > 0 ? ():()} */}
 					{bookmarks.map((bookmark, index) => (
 						<TableRow
 							hover
