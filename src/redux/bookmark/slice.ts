@@ -9,6 +9,8 @@ import { fetchBookmarks,
 
 const initialState: BookmarkSliceState = {
 	bookmarks: [],
+	// searchValue: [],
+	searchValue: '',
 	status: Status.LOADING, // loading | success | error
 
 };
@@ -43,6 +45,14 @@ export const bookmarkSlice = createSlice({  //postsSlice
 				state.bookmarks = state.bookmarks.filter((bookmark) => bookmark.id !== id)
 			}			
 		},
+		searchBookmark: (state, action: PayloadAction<string>) => {
+			
+			// state.searchValue = state.bookmarks.filter((el) => {
+			// let regex = new RegExp(action.payload, "i");
+			// 	return regex;
+			// })
+			state.searchValue = action.payload;
+		}
 	},
 	extraReducers: (builder) => {
 		// Add reducers for additional action types here, and handle loading state as needed
@@ -62,7 +72,7 @@ export const bookmarkSlice = createSlice({  //postsSlice
 });
 
 // Action creators are generated for each case reducer function
-export const { setBookmarks, addBookmark, changeBookmark, deleteBookmark } = bookmarkSlice.actions;
+export const { setBookmarks, addBookmark, changeBookmark, deleteBookmark, searchBookmark } = bookmarkSlice.actions;
 
 // export const selectBookmarkId = (state, userId) => state.bookmarks.bookmark.find(bookmark => bookmark.id === userId);
 
