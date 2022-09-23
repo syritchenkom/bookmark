@@ -33,9 +33,11 @@ const BookmarkList: FC = () => {
 	const { userId } = useParams();
 
 	const dispatch = useAppDispatch();
-	const bookmarks = useAppSelector(({ bookmark }) => bookmark.bookmarks);
+	const { bookmarks, searchValue, isSearch } = useAppSelector(
+		({ bookmark }) => bookmark
+	);
 	const [activeBookmark, setActiveBookmark] = useState(bookmarks[0]);
-	const searchBook = useAppSelector(({ bookmark }) => bookmark.searchValue);
+	const currentBookmarks = isSearch ? searchValue : bookmarks;
 
 	useEffect(() => {
 		dispatch(fetchBookmarks({ userId }));
@@ -84,8 +86,7 @@ const BookmarkList: FC = () => {
 				}}>
 				<TableBody>
 					{/* Data from jsonplaceholder.typicode.com */}
-					{/* {bookmarks.length > 0 ? ():()} */}
-					{bookmarks.map((bookmark, index) => (
+					{currentBookmarks.map((bookmark, index) => (
 						<TableRow
 							hover
 							key={bookmark.id}
