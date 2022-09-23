@@ -24,9 +24,6 @@ import { deleteBookmark } from '../../redux/bookmark/slice';
 const BookmarkList: FC = () => {
 	const [bookMenu, setBookMenu] = useState<null | HTMLElement>(null);
 	const [renameBookmarkOpen, setRenameBookmarkOpen] = useState<boolean>(false);
-	// const [activeBookmark, setActiveBookmark] = useState(bookmarks[0]);
-
-	// console.log('activeBookmark', activeBookmark);
 
 	// const params = useParams();
 	// const userId = params.userId
@@ -37,6 +34,7 @@ const BookmarkList: FC = () => {
 		({ bookmark }) => bookmark
 	);
 	const [activeBookmark, setActiveBookmark] = useState(bookmarks[0]);
+	//Added variable to search component
 	const currentBookmarks = isSearch ? searchValue : bookmarks;
 
 	useEffect(() => {
