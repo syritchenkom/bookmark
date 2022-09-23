@@ -9,8 +9,9 @@ import { fetchBookmarks,
 
 const initialState: BookmarkSliceState = {
 	bookmarks: [],
-	// searchValue: [],
-	searchValue: '',
+	searchValue: [],
+	isSearch: false,
+	// searchValue: '',
 	status: Status.LOADING, // loading | success | error
 
 };
@@ -46,12 +47,13 @@ export const bookmarkSlice = createSlice({  //postsSlice
 			}			
 		},
 		searchBookmark: (state, action: PayloadAction<string>) => {
+			const value = action.payload.toLowerCase();
+			console.log('value', value);
+			const bookmarks = state.bookmarks.filter((el) => el.title.toLocaleLowerCase().includes(value));
+			state.isSearch = !!value;
+			state.searchValue = bookmarks;
+			console.log('bookmarks', bookmarks);
 			
-			// state.searchValue = state.bookmarks.filter((el) => {
-			// let regex = new RegExp(action.payload, "i");
-			// 	return regex;
-			// })
-			state.searchValue = action.payload;
 		}
 	},
 	extraReducers: (builder) => {
