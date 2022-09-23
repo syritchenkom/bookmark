@@ -19,6 +19,9 @@ import GoogleLogo from '../../assets/logo/googleLogo.png';
 import AddFolder from './AddFolder';
 import AddBookmark from './AddBookmark';
 
+import { searchBookmark } from '../../redux/bookmark/slice';
+import { useAppDispatch } from '../../redux/store';
+
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
 	justifyContent: 'flex-end'
 }));
@@ -79,15 +82,17 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const Header: FC = () => {
+	const dispatch = useAppDispatch();
 	const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
 	const [addFolderOpen, setAddFolderOpen] = useState<boolean>(false);
 	const [addBookmarkOpen, setAddBookmarkOpen] = useState<boolean>(false);
-	// const [searchBookmark, setSearchBookmark] = useState<string | undefined>();
+	const [searchValue, setSearchValue] = useState<string>('');
 
-	// const searchBookmarks = (event: any) => {
-	// 	const value = event.target?.value;
-	// 	setSearchBookmark(value)
-	// };
+	// Search Bookmark
+	const searchBookmarks = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setSearchValue(e.target.value);
+		dispatch(searchBookmark(e.target.value));
+	};
 
 	// Add New Folder
 	const addNewFolder = () => {
@@ -124,8 +129,10 @@ const Header: FC = () => {
 				<SearchIcon />
 			</SearchIconWrapper>
 			<StyledInputBase
-				// onChange={searchBookmarks}
-				placeholder="Search…"
+				type="text"
+				value={searchValue}
+				onChange={searchBookmarks}
+				placeholder="Search bookmark..."
 				inputProps={{ 'aria-label': 'search' }}
 			/>
 		</>
