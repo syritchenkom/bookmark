@@ -9,13 +9,13 @@ import {
 	TextField
 } from '@mui/material';
 
-import { useAppDispatch, useAppSelector } from '../../redux/store';
+import { useAppDispatch } from '../../redux/store';
 // import { nanoid } from '@reduxjs/toolkit';
 
-import { useNavigate, useParams } from 'react-router-dom';
+// import { useNavigate, useParams } from 'react-router-dom';
 import { changeBookmark } from '../../redux/bookmark/slice';
 import { Bookmark } from '../../redux/bookmark/types';
-import { Bookmarks, BookmarksOutlined } from '@mui/icons-material';
+// import { Bookmarks, BookmarksOutlined } from '@mui/icons-material';
 
 const style = {
 	position: 'absolute' as 'absolute',
@@ -47,11 +47,11 @@ const RenameBookmark: FC<RenameBookmarkProps> = ({
 	bookmark
 }) => {
 	console.log('bookmark', bookmark);
-	const { userId } = useParams();
+	// const { userId } = useParams();
 	const dispatch = useAppDispatch();
 
 	const [currentBookmark, setCurrentBookmark] = useState(bookmark);
-	const [open, setOpen] = useState(false);
+	// const [open, setOpen] = useState(false);
 
 	const onTitleChanged = (e: any) => {
 		const item: Bookmark = {
@@ -68,15 +68,9 @@ const RenameBookmark: FC<RenameBookmarkProps> = ({
 		setCurrentBookmark(item);
 	};
 
-	// const navigate = useNavigate();
-	// console.log('bookmarks', bookmarks);
-
-	// const bookmark = useSelector((state) =>
-	// 	selecBookmarkId(state, Number(userId))
-
-	const handleOpen = () => {
-		setOpen(true);
-	};
+	// const handleOpen = () => {
+	// 	setOpen(true);
+	// };
 	const handleClose = () => {
 		setRenameBookmarkOpen(false);
 	};
