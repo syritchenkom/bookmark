@@ -38,6 +38,8 @@ const BookmarkList: FC = () => {
 	const currentBookmarks = isSearch ? searchValue : bookmarks;
 
 	useEffect(() => {
+		/* const timer = setTimeout(() => dispatch(fetchBookmarks({ userId })), 1000);
+		return () => clearTimeout(timer); */
 		dispatch(fetchBookmarks({ userId }));
 	}, [dispatch, userId]);
 
