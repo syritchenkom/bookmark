@@ -12,9 +12,8 @@ export enum Status {
 }
 
 export interface BookmarkSliceState {
-   // searchValue: Bookmark[];
-   searchValue: string;
 	bookmarks: Bookmark[];
+   searchValue: Bookmark[];
+   isSearch: boolean;
    status: Status;
-   // addBookmark: AddBookmark;
 }
