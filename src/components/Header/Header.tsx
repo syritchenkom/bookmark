@@ -115,11 +115,13 @@ const Header: FC = () => {
 	// Handle Menu Closed
 	const handleMenuClose = () => {
 		// If addBookmarkOpen that Menu closed
-		// if (addBookmarkOpen === true) {
-		// 	anchorElNav();
+		if (addBookmarkOpen === true) {
+			setAnchorElNav(null);
+		}
+
 		// } =======
 		setAnchorElNav(null);
-		// setAddBookmarkOpen(false);
+		setAddBookmarkOpen(false);
 	};
 
 	const mobileSearchId = 'primary-search-account-menu-mobile';
