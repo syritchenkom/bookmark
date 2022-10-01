@@ -49,8 +49,6 @@ export const bookmarkSlice = createSlice({  //postsSlice
 		searchBookmark: (state, action: PayloadAction<string>) => {
 			const value = action.payload.toLowerCase();
 			console.log('value', value);
-			// const bookmarks = state.bookmarks.filter((el) => el.title.toLocaleLowerCase().includes(value));
-			// var shortFind = toLowerCase().includes(value);
 			const bookmarks = state.bookmarks.filter((el) => el.title.toLowerCase().includes(value) || el.body.toLowerCase().includes(value));
 			state.isSearch = !!value;
 			state.searchValue = bookmarks;
