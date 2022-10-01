@@ -2,8 +2,8 @@ import React, { FC } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Grid, Container } from '@mui/material';
 
-import FolderList from '../../components/FolderList/FolderList';
-import Header from '../../components/Header/Header';
+import FolderList from '../../components/FolderList';
+import Header from '../../components/Header';
 // import UserItem from '../../components/UserItem/UserItem';
 
 const Home: FC = () => {
