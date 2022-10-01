@@ -25,6 +25,7 @@ import Skeleton from './Skeleton';
 const BookmarkList: FC = () => {
 	const [bookMenu, setBookMenu] = useState<null | HTMLElement>(null);
 	const [renameBookmarkOpen, setRenameBookmarkOpen] = useState<boolean>(false);
+	const [isLoading, setIsLoading] = useState<boolean>(true);
 
 	// const params = useParams();
 	// const userId = params.userId
@@ -39,9 +40,16 @@ const BookmarkList: FC = () => {
 	const currentBookmarks = isSearch ? searchValue : bookmarks;
 
 	useEffect(() => {
-		// const timer = setTimeout(() => dispatch(fetchBookmarks({ userId })), 5000);
-		// return () => clearTimeout(timer);
-		dispatch(fetchBookmarks({ userId }));
+		const timer = setTimeout(() => {
+			dispatch(fetchBookmarks({ userId }));
+			setIsLoading(false);
+			// searchValue();
+		}, 1000);
+
+		return () => clearTimeout(timer);
+		//=================================
+		// dispatch(fetchBookmarks({ userId }));
+		// setIsLoading(false);
 	}, [dispatch, userId]);
 
 	const open = Boolean(bookMenu);
@@ -77,6 +85,10 @@ const BookmarkList: FC = () => {
 		);
 	};
 
+	const skeletons = [...new Array(6)].map((_, index) => (
+		<Skeleton key={index} />
+	));
+
 	return (
 		<TableContainer component={Paper} sx={{ marginTop: '6rem' }}>
 			<Table
@@ -87,60 +99,51 @@ const BookmarkList: FC = () => {
 				}}>
 				<TableBody>
 					{/* Data from jsonplaceholder.typicode.com */}
-					{/* {currentBookmarks.map((bookmark, index) => ( */}
-					{currentBookmarks.map((bookmark, index) => (
-						<Skeleton
-							hover
-							key={bookmark.id}
-							sx={{
-								display: 'flex',
-								// alignItems: 'center',
-								'&:last-child td, &:last-child th': { border: 0 }
-							}}
-						/>
-
-						/* <TableRow
-							hover
-							key={bookmark.id}
-							sx={{
-								display: 'flex',
-								// alignItems: 'center',
-								'&:last-child td, &:last-child th': { border: 0 }
-							}}>
-							<TableCell
-								sx={{
-									display: 'flex',
-									alignItems: 'center'
-								}}
-								component="th"
-								scope="row">
-								<DriveFileIcon sx={{ marginRight: '1rem' }} />
-								Title: {bookmark.title}
-								<br />
-								Body: {bookmark.body}
-							</TableCell>
-							<TableCell sx={{ flexGrow: 1 }} />
-							<TableCell
-								sx={{
-									display: { xs: 'flex' }
-									// display: 'flex'
-								}}>
-								<IconButton
-									size="large" //?
-									title="bookmark menu" //?
-									aria-label="more"
-									aria-controls="bookmark-menu"
-									// id="long-button"
-									// aria-controls={open ? 'long-menu' : undefined}
-									// aria-expanded={open ? 'true' : undefined}
-									aria-haspopup="true"
-									onClick={(e) => handleBookClick(e, index)}
-									color="inherit">
-									<MoreIcon />
-								</IconButton>
-							</TableCell>
-						</TableRow> */
-					))}
+					{isLoading
+						? skeletons
+						: currentBookmarks.map((bookmark, index) => (
+								<TableRow
+									hover
+									key={bookmark.id}
+									sx={{
+										display: 'flex',
+										// alignItems: 'center',
+										'&:last-child td, &:last-child th': { border: 0 }
+									}}>
+									<TableCell
+										sx={{
+											display: 'flex',
+											alignItems: 'center'
+										}}
+										component="th"
+										scope="row">
+										<DriveFileIcon sx={{ marginRight: '1rem' }} />
+										Title: {bookmark.title}
+										<br />
+										Body: {bookmark.body}
+									</TableCell>
+									<TableCell sx={{ flexGrow: 1 }} />
+									<TableCell
+										sx={{
+											display: { xs: 'flex' }
+											// display: 'flex'
+										}}>
+										<IconButton
+											size="large" //?
+											title="bookmark menu" //?
+											aria-label="more"
+											aria-controls="bookmark-menu"
+											// id="long-button"
+											// aria-controls={open ? 'long-menu' : undefined}
+											// aria-expanded={open ? 'true' : undefined}
+											aria-haspopup="true"
+											onClick={(e) => handleBookClick(e, index)}
+											color="inherit">
+											<MoreIcon />
+										</IconButton>
+									</TableCell>
+								</TableRow>
+						  ))}
 				</TableBody>
 			</Table>
 			<Menu
