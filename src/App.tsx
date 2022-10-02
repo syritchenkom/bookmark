@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Home from './pages/Home/Home';
-import BookmarkList from './components/BookmarkList/BookmarkList';
+import BookmarkList from './components/BookmarkList';
 
 const App = () => {
 	return (
@@ -21,7 +21,7 @@ const App = () => {
 							<p>
 								&lt;There's nothing here!&gt;
 								<br />
-								{'<='} Select an invoice on left
+								{'<='} Select an folder on left
 							</p>
 						</div>
 					}
