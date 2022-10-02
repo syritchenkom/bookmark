@@ -144,6 +144,7 @@ const BookmarkList: FC = () => {
 									</TableCell>
 								</TableRow>
 						  ))}
+
 				</TableBody>
 			</Table>
 			<Menu
