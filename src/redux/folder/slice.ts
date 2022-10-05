@@ -1,9 +1,10 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction, PayloadActionCreator } from '@reduxjs/toolkit'
 import { fetchFolders } from './asyncActions';
 import { Folder, FolderSliceState, Status } from './types'
 
 const initialState: FolderSliceState  = {
   folders: [],
+  // sortBy: "name",
   status: Status.LOADING, // loading | success | error
 }
 
@@ -18,6 +19,13 @@ export const folderSlice = createSlice({
    },
    addFolder(state, action: PayloadAction<Folder>){
     state.folders.push({...action.payload});
+   },
+   sortFolders(state){
+      // const sortBy = action.payload.name;
+      // state.folders = state.folders.sort((a, b) => b.name < a.name);
+    // ===============
+    console.log(state.folders.sort((a,b) => a.name.localeCompare(b.name)))
+    state.folders = state.folders.sort((a,b) => a.name.localeCompare(b.name))
    }
   },
   extraReducers: (builder) => {
@@ -39,6 +47,6 @@ export const folderSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { setFolders, addFolder } = folderSlice.actions
+export const { setFolders, addFolder, sortFolders } = folderSlice.actions
 
 export default folderSlice.reducer
