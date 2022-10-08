@@ -92,12 +92,12 @@ const Header: FC = () => {
 	// Search Bookmark
 	const searchBookmarks = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setSearchValue(e.target.value);
-		setTimeout(() => dispatch(searchBookmark(e.target.value)), 3000);
+		setTimeout(() => dispatch(searchBookmark(e.target.value)), 1000);
 	};
 
 	// Sort by Name Folder
-	const sortingASCFolders = (sortBy: string) => {
-		dispatch(sortFolders(sortBy));
+	const sortingASCFolders = () => {
+		dispatch(sortFolders());
 	};
 
 	// Add New Folder
@@ -124,7 +124,6 @@ const Header: FC = () => {
 		if (addBookmarkOpen === true) {
 			setAnchorElNav(null);
 		}
-
 		// } =======
 		setAnchorElNav(null);
 		setAddBookmarkOpen(false);
@@ -196,7 +195,7 @@ const Header: FC = () => {
 						}}
 						open={Boolean(anchorElNav)}
 						onClose={handleMenuClose}>
-						<MenuItem divider onClick={sortingASCFolders('name')}>
+						<MenuItem divider onClick={sortingASCFolders}>
 							Sort by name
 						</MenuItem>
 						{/* Add new Bookmark */}
