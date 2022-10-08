@@ -85,9 +85,12 @@ const BookmarkList: FC = () => {
 		);
 	};
 
-	const skeletons = [...new Array(6)].map((_, index) => (
+	/* const skeletons = [...new Array(6)].map((_, index) => (
 		<Skeleton key={index} />
-	));
+	)); */
+
+	const skeletons = [Array(6)].map((_, index) => <Skeleton key={index} />);
+	console.log('skeletons', skeletons);
 
 	return (
 		<TableContainer component={Paper} sx={{ marginTop: '6rem' }}>
@@ -144,7 +147,6 @@ const BookmarkList: FC = () => {
 									</TableCell>
 								</TableRow>
 						  ))}
-
 				</TableBody>
 			</Table>
 			<Menu
