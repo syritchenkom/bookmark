@@ -5,23 +5,22 @@ import {
 	AppBar,
 	Box,
 	Toolbar,
-	IconButton,
+	Switch,
 	Typography,
 	InputBase,
-	MenuItem,
-	Menu,
-	Avatar
+	Avatar,
+	FormControlLabel
 } from '@mui/material';
 
-import SearchIcon from '@mui/icons-material/Search';
-import MoreIcon from '@mui/icons-material/MoreVert';
-import GoogleLogo from '../../assets/logo/googleLogo.png';
-import AddFolder from './AddFolder';
-import AddBookmark from './AddBookmark';
+import { Search } from '@mui/icons-material';
 
-import { searchBookmark } from '../../redux/bookmark/slice';
+import GoogleLogo from '../../assets/logo/googleLogo.png';
+import ToggleColorMode from './ToggleColorMode';
+
 import { useAppDispatch } from '../../redux/store';
-import { sortFolders } from '../../redux/folder/slice';
+import { searchGlobalBookmark } from '../../redux/bookmark/asyncActions';
+import { searchBookmark } from '../../redux/bookmark/slice';
+import MenuHeader from './MenuHeader';
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
 	justifyContent: 'flex-end'
@@ -39,7 +38,7 @@ const SearchIconItem = styled('div')(({ theme }) => ({
 	}
 }));
 
-const Search = styled('div')(({ theme }) => ({
+const SearchIconStyled = styled('div')(({ theme }) => ({
 	position: 'relative',
 	borderRadius: '1.5rem',
 	backgroundColor: alpha(theme.palette.common.white, 0.15),
@@ -82,58 +81,60 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 	}
 }));
 
+// const WbSunnyIconStyled = styled('WbSunny')(({ theme }) => ({
+// 	cursor: 'pointer',
+// 	'&:hover': { opacity: '50%' }
+// }));
+
+// const NightlightIconStyled = styled('Nightlight')(({ theme }) => ({
+// 	cursor: 'pointer',
+// 	'&:hover': { opacity: '50%' }
+// }));
+
 const Header: FC = () => {
 	const dispatch = useAppDispatch();
-	const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
-	const [addFolderOpen, setAddFolderOpen] = useState<boolean>(false);
-	const [addBookmarkOpen, setAddBookmarkOpen] = useState<boolean>(false);
+
+	const [checkedSwitch, setCheckedSwitch] = useState<boolean>(false);
+	const [openMenuHeader, setOpenMenuHeader] = useState<boolean>(false);
 	const [searchValue, setSearchValue] = useState<string>('');
+
+	// Switch Search
+	const changeSearchSwitch = (e: React.ChangeEvent<HTMLInputElement>) => {
+		// send information about search switch
+		setCheckedSwitch(e.target.checked);
+		// console.log(e.target.checked);
+	};
 
 	// Search Bookmark
 	const searchBookmarks = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setSearchValue(e.target.value);
-		setTimeout(() => dispatch(searchBookmark(e.target.value)), 1000);
+		//event.preventDefault() => метод для відміни дій бравзера
+		//addEventListener
+		//event.defaultPrevented
+		//================
+		// setSearchValue(e.target.value);
+		// e.preventDefault();
+		setSearchValue(e.currentTarget.value);
+
+		setTimeout(
+			() =>
+				!checkedSwitch // !checkedSwitch -> checkedSwitch === false
+					? dispatch(searchBookmark(e.target.value))
+					: dispatch(searchGlobalBookmark(e.target.value)),
+			1000
+		);
 	};
 
-	// Sort by Name Folder
-	const sortingASCFolders = () => {
-		dispatch(sortFolders());
-	};
-
-	// Add New Folder
-	const addNewFolder = () => {
-		setAddFolderOpen((addFolderOpen) => !addFolderOpen);
-	};
-	const folderModalClose = () => {
-		setAddFolderOpen(false);
-	};
-	// Add New Bookmark
-	const addNewBookmark = () => {
-		setAddBookmarkOpen((addBookmarkOpen) => !addBookmarkOpen);
-	};
-	const bookmarkModalClose = () => {
-		setAddBookmarkOpen(false);
-	};
-	// Handle Menu Open
+	// Handle Menu Header
 	const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-		setAnchorElNav(event.currentTarget);
-	};
-	// Handle Menu Closed
-	const handleMenuClose = () => {
-		// If addBookmarkOpen that Menu closed
-		if (addBookmarkOpen === true) {
-			setAnchorElNav(null);
-		}
-		// } =======
-		setAnchorElNav(null);
-		setAddBookmarkOpen(false);
+		// setAnchorElNav(event.currentTarget);
+		setOpenMenuHeader(true);
 	};
 
 	const mobileSearchId = 'primary-search-account-menu-mobile';
 	const RenderSearch = (
 		<>
 			<SearchIconWrapper id={mobileSearchId}>
-				<SearchIcon />
+				<Search />
 			</SearchIconWrapper>
 			<StyledInputBase
 				type="text"
@@ -165,74 +166,43 @@ const Header: FC = () => {
 						Bookmarks
 					</Typography>
 				</Box>
-				<SearchIconItem>
-					<SearchIcon />
-				</SearchIconItem>
-				<Search aria-controls={mobileSearchId}>{RenderSearch}</Search>
-				<Box sx={{ flexGrow: 1 }} />
-				<Box sx={{ display: { xs: 'flex' } }}>
-					<IconButton
-						size="large"
-						title="header menu"
-						aria-label="show more"
-						aria-controls="menu-bookmark"
-						aria-haspopup="true"
-						onClick={handleMenuOpen}
-						color="inherit">
-						<MoreIcon />
-					</IconButton>
-					<Menu
-						anchorEl={anchorElNav}
-						anchorOrigin={{
-							vertical: 'top',
-							horizontal: 'right'
-						}}
-						id="menu-bookmark"
-						keepMounted
-						transformOrigin={{
-							vertical: 'top',
-							horizontal: 'right'
-						}}
-						open={Boolean(anchorElNav)}
-						onClose={handleMenuClose}>
-						<MenuItem divider onClick={sortingASCFolders}>
-							Sort by name
-						</MenuItem>
-						{/* Add new Bookmark */}
-						<MenuItem onClick={addNewBookmark}>Add new Bookmark</MenuItem>
-						{/* Add Bookmark Modal Card */}
-						<AddBookmark
-							addBookmarkOpen={addBookmarkOpen}
-							setAddBookmarkOpen={setAddBookmarkOpen}
-							onClose={bookmarkModalClose}
-						/>
-						{/* Add new Folder */}
-						<MenuItem divider onClick={addNewFolder}>
-							Add new Folder
-						</MenuItem>
-						<AddFolder
-							addFolderOpen={addFolderOpen}
-							setAddFolderOpen={setAddFolderOpen}
-							onClose={folderModalClose}
-						/>
-						<MenuItem
-						// onClick={handleProfileMenuOpen}
-						>
-							Import Bookmarks
-						</MenuItem>
-						<MenuItem
-							divider
-							// onClick={handleProfileMenuOpen}
-						>
-							Export Bookmarks
-						</MenuItem>
-						<MenuItem
-						// onClick={handleProfileMenuOpen}
-						>
-							Help center
-						</MenuItem>
-					</Menu>
+				{/* Switch to global or local search */}
+				<Box sx={{ width: '12%', textAlign: 'center' }}>
+					<FormControlLabel
+						value="bottom"
+						control={
+							<Switch
+								checked={checkedSwitch}
+								onChange={changeSearchSwitch}
+								color="default"
+								inputProps={{ 'aria-label': 'controlled' }}
+							/>
+						}
+						label={checkedSwitch ? 'Global Search' : 'Local Search'}
+						labelPlacement="bottom"
+					/>
 				</Box>
+				<SearchIconItem>
+					<Search />
+				</SearchIconItem>
+				<SearchIconStyled aria-controls={mobileSearchId}>
+					{RenderSearch}
+				</SearchIconStyled>
+				<Box sx={{ flexGrow: 1 }} />
+				{/* Switch Dark or White background */}
+				<ToggleColorMode />
+				{/* <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
+					<WbSunnyIconStyled />
+					<NightlightIconStyled />
+				</Box>
+				 <FormGroup>
+					<FormControlLabel
+						control={<MaterialUISwitch sx={{ m: 1 }} defaultChecked />}
+						label="MUI switch"
+					/>
+				</FormGroup> */}
+
+				<MenuHeader handleClick={handleMenuOpen} />
 			</StyledToolbar>
 		</AppBar>
 	);
