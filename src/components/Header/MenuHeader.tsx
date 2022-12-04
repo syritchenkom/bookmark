@@ -9,11 +9,11 @@ import AddBookmark from './AddBookmark';
 import { useAppDispatch } from '../../redux/store';
 import { sortFolders } from '../../redux/folder/slice';
 
-interface MenuHeaderProps {
-	handleClick: any;
-}
+// interface MenuHeaderProps {
+// 	handleClick: any;
+// }
 
-const MenuHeader: FC<MenuHeaderProps> = ({ handleClick }) => {
+const MenuHeader: FC = () => {
 	const dispatch = useAppDispatch();
 
 	const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
