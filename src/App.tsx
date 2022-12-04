@@ -2,11 +2,13 @@ import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Home from './pages/Home/Home';
 import BookmarkList from './components/BookmarkList';
+import NotFound from './pages/NotFound';
 
 const App = () => {
 	return (
 		<Routes>
 			<Route path="/" element={<Home />}>
+				<Route path=":userId" element={<BookmarkList />} />
 				<Route
 					index
 					element={
@@ -26,24 +28,9 @@ const App = () => {
 						</div>
 					}
 				/>
-				<Route path=":userId" element={<BookmarkList />} />
 				{/* <Route path="*" element={<Navigate to="/" replace />} /> */}
-				<Route
-					path="*"
-					element={
-						<div
-							style={{
-								display: 'flex',
-								justifyContent: 'center',
-								alignItems: 'center',
-								width: '100%',
-								minHeight: '40rem'
-							}}>
-							<p>There's nothing here!</p>
-						</div>
-					}
-				/>
 			</Route>
+			<Route path="/*" element={<NotFound />} />
 		</Routes>
 	);
 };
