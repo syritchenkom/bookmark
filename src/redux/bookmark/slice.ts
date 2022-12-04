@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {Bookmark, BookmarkSliceState, Status} from './types';
-import { fetchBookmarks, 
-	renameBookmark 
+import { fetchBookmarks, renameBookmark, searchGlobalBookmark 
 } from './asyncActions';
 // import AddBookmark from '../../components/Header/AddBookmark';
 
@@ -53,28 +52,42 @@ export const bookmarkSlice = createSlice({  //postsSlice
 			state.isSearch = !!value;
 			state.searchValue = bookmarks;
 			console.log('bookmarks', bookmarks);
-
-		}
+		} 
 	},
 	extraReducers: (builder) => {
 		// Add reducers for additional action types here, and handle loading state as needed
 		builder
-			.addCase(fetchBookmarks.pending, (state, action) => {
-			state.status = Status.LOADING
+			.addCase(fetchBookmarks.pending, (state) => {
+			state.status = Status.LOADING;
+			state.bookmarks = [];
 		})
 			.addCase(fetchBookmarks.fulfilled, (state, action) => {
 			// Add user to the state array
+			state.status = Status.SUCCESS;
 			state.bookmarks = action.payload;
 		})
-			.addCase(renameBookmark.fulfilled, (state, action) => {
-
+			.addCase(fetchBookmarks.rejected, (state) => {
+				state.status = Status.ERROR;
+				state.bookmarks = [];
 		})
+			.addCase(renameBookmark.fulfilled, (state, action) => {
+				state.status = Status.SUCCESS;
+				// state.bookmarks = action.payload; //?????????
+		})
+			.addCase(searchGlobalBookmark.fulfilled, (state, action) => {
+				state.status = Status.SUCCESS;
+				state.bookmarks = action.payload;
+				console.log(state.bookmarks = action.payload)
+				
+				// state.bookmarks = folders.filter((folder) => userIds.includes(folder.id));
+			})
 	}
 });
 
+export const getBookmarkStatus = (state: any) => state.bookmarks.status; 
+export const getBookmarkError = (state: any) => state.bookmarks.error; 
+
 // Action creators are generated for each case reducer function
 export const { setBookmarks, addBookmark, changeBookmark, deleteBookmark, searchBookmark } = bookmarkSlice.actions;
-
-// export const selectBookmarkId = (state, userId) => state.bookmarks.bookmark.find(bookmark => bookmark.id === userId);
 
 export default bookmarkSlice.reducer;
