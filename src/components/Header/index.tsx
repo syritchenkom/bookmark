@@ -9,7 +9,8 @@ import {
 	Typography,
 	InputBase,
 	Avatar,
-	FormControlLabel
+	FormControlLabel,
+	ListItemButton
 } from '@mui/material';
 
 import { Search } from '@mui/icons-material';
@@ -81,39 +82,31 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 	}
 }));
 
-// const WbSunnyIconStyled = styled('WbSunny')(({ theme }) => ({
-// 	cursor: 'pointer',
-// 	'&:hover': { opacity: '50%' }
-// }));
-
-// const NightlightIconStyled = styled('Nightlight')(({ theme }) => ({
-// 	cursor: 'pointer',
-// 	'&:hover': { opacity: '50%' }
-// }));
-
 const Header: FC = () => {
 	const dispatch = useAppDispatch();
 
 	const [checkedSwitch, setCheckedSwitch] = useState<boolean>(false);
-	const [openMenuHeader, setOpenMenuHeader] = useState<boolean>(false);
 	const [searchValue, setSearchValue] = useState<string>('');
+	const [openMenuHeader] = useState<boolean>(false);
 
 	// Switch Search
-	const changeSearchSwitch = (e: React.ChangeEvent<HTMLInputElement>) => {
-		// send information about search switch
-		setCheckedSwitch(e.target.checked);
-		// console.log(e.target.checked);
-	};
+	// const changeSearchSwitch = (e: React.ChangeEvent<HTMLInputElement>) => {
+	// 	// send information about search switch
+	// 	setCheckedSwitch(e.target.checked);
+	// 	// console.log(e.target.checked);
+	// };
+	const changeSearchSwitch = (e: React.ChangeEvent<HTMLInputElement>) =>
+		setCheckedSwitch((value) => !value);
 
 	// Search Bookmark
 	const searchBookmarks = (e: React.ChangeEvent<HTMLInputElement>) => {
 		//event.preventDefault() => метод для відміни дій бравзера
-		//addEventListener
-		//event.defaultPrevented
-		//================
-		// setSearchValue(e.target.value);
-		// e.preventDefault();
-		setSearchValue(e.currentTarget.value);
+		//addEventListener => для добавлення обробника подій
+		//removeEventListener => для видалення обробника подій
+		//event.currentTarget => для читання eventa
+		//====
+
+		setSearchValue(e.target.value);
 
 		setTimeout(
 			() =>
@@ -125,10 +118,10 @@ const Header: FC = () => {
 	};
 
 	// Handle Menu Header
-	const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-		// setAnchorElNav(event.currentTarget);
-		setOpenMenuHeader(true);
-	};
+	// const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+	// 	// setAnchorElNav(event.currentTarget);
+	// 	openMenuHeader();
+	// };
 
 	const mobileSearchId = 'primary-search-account-menu-mobile';
 	const RenderSearch = (
@@ -138,6 +131,7 @@ const Header: FC = () => {
 			</SearchIconWrapper>
 			<StyledInputBase
 				type="text"
+				// autoFocus //???
 				value={searchValue}
 				onChange={searchBookmarks}
 				placeholder="Search bookmark..."
@@ -201,8 +195,10 @@ const Header: FC = () => {
 						label="MUI switch"
 					/>
 				</FormGroup> */}
-
-				<MenuHeader handleClick={handleMenuOpen} />
+				{/* Menu Header */}
+				<ListItemButton selected={openMenuHeader}>
+					<MenuHeader />
+				</ListItemButton>
 			</StyledToolbar>
 		</AppBar>
 	);
