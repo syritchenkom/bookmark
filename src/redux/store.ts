@@ -2,11 +2,14 @@ import { configureStore } from '@reduxjs/toolkit'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import folder from './folder/slice'
 import bookmark from './bookmark/slice';
+import theme from './theme/slice';
+
 
 export const store = configureStore({
   reducer: {
     folder,
     bookmark,
+    theme
     // bookmarkStore: bookmarkReducer
 
   },
