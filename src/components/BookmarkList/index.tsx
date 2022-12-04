@@ -6,21 +6,21 @@ import {
 	TableBody,
 	TableContainer,
 	TableRow,
-	Paper,
 	TableCell,
+	Paper,
+	Skeleton,
 	IconButton,
 	MenuItem,
 	Menu
 } from '@mui/material';
-import MoreIcon from '@mui/icons-material/MoreVert';
-import DriveFileIcon from '@mui/icons-material/InsertDriveFileOutlined';
+import { InsertDriveFileOutlined, MoreVert } from '@mui/icons-material';
 
 import { useAppDispatch, useAppSelector } from '../../redux/store';
 import { fetchBookmarks } from '../../redux/bookmark/asyncActions';
-import RenameBookmark from './RenameBookmark';
 import { deleteBookmark } from '../../redux/bookmark/slice';
-// import { deleteBookmark } from '../../redux/bookmark/slice';
-import Skeleton from './Skeleton';
+
+import RenameBookmark from './RenameBookmark';
+// import Skeleton from './Skeleton';
 
 const BookmarkList: FC = () => {
 	const [bookMenu, setBookMenu] = useState<null | HTMLElement>(null);
@@ -40,16 +40,13 @@ const BookmarkList: FC = () => {
 	const currentBookmarks = isSearch ? searchValue : bookmarks;
 
 	useEffect(() => {
-		const timer = setTimeout(() => {
+		const timer: any = setTimeout(() => {
 			dispatch(fetchBookmarks({ userId }));
 			setIsLoading(false);
 			// searchValue();
 		}, 1000);
 
 		return () => clearTimeout(timer);
-		//=================================
-		// dispatch(fetchBookmarks({ userId }));
-		// setIsLoading(false);
 	}, [dispatch, userId]);
 
 	const open = Boolean(bookMenu);
@@ -85,12 +82,13 @@ const BookmarkList: FC = () => {
 		);
 	};
 
-	/* const skeletons = [...new Array(6)].map((_, index) => (
+	// Problem with skeletons
+	/* const skeletons = [...new Array(10)].map((_, index) => (
 		<Skeleton key={index} />
 	)); */
-
-	const skeletons = [Array(6)].map((_, index) => <Skeleton key={index} />);
-	console.log('skeletons', skeletons);
+	const skeletons = Array.from(new Array(2)).map((item, index) => (
+		<Skeleton key={index} variant="rounded" width={762} height={110} />
+	));
 
 	return (
 		<TableContainer component={Paper} sx={{ marginTop: '6rem' }}>
@@ -118,9 +116,17 @@ const BookmarkList: FC = () => {
 											display: 'flex',
 											alignItems: 'center'
 										}}
-										component="th"
+										// component="th"
 										scope="row">
-										<DriveFileIcon sx={{ marginRight: '1rem' }} />
+										<InsertDriveFileOutlined sx={{ marginRight: '1rem' }} />
+									</TableCell>
+									<TableCell
+										sx={{
+											display: 'flex',
+											alignItems: 'center'
+										}}
+										// component="th"
+										scope="row">
 										Title: {bookmark.title}
 										<br />
 										Body: {bookmark.body}
@@ -142,7 +148,7 @@ const BookmarkList: FC = () => {
 											aria-haspopup="true"
 											onClick={(e) => handleBookClick(e, index)}
 											color="inherit">
-											<MoreIcon />
+											<MoreVert />
 										</IconButton>
 									</TableCell>
 								</TableRow>
