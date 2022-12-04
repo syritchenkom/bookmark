@@ -36,6 +36,7 @@ export enum Status {
 
 export interface FolderSliceState {
    folders: Folder[];
+	filterFolders: Folder[];
 	// sortBy: string;
    status: Status;
 }
