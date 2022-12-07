@@ -75,11 +75,12 @@ export const bookmarkSlice = createSlice({  //postsSlice
 				// state.bookmarks = action.payload; //?????????
 		})
 			.addCase(searchGlobalBookmark.fulfilled, (state, action) => {
-				state.status = Status.SUCCESS;
-				state.bookmarks = action.payload;
-				console.log(state.bookmarks = action.payload)
-				
-				// state.bookmarks = folders.filter((folder) => userIds.includes(folder.id));
+				// state.bookmarks = action.payload; 
+				const {value, bookmarks} = action.payload
+			   state.status = Status.SUCCESS;
+				state.isSearch = !!value;
+				state.searchValue = bookmarks;
+				console.log("searchGlobalBookmark", action.payload)
 			})
 	}
 });
