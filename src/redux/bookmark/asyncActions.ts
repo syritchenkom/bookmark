@@ -41,6 +41,7 @@ export const deleteBookmark = createAsyncThunk('bookmark/deleteBookmarkStatus', 
 });
 
 export const searchGlobalBookmark = createAsyncThunk('bookmark/searchGlobalBookmarkStatus', async(title: string, thunkAPI) => {
+	console.log('searchGlobalBookmark');
 	const {data} = await axios.get<Bookmark[]>(
 		`https://jsonplaceholder.typicode.com/posts`
 	);
@@ -49,6 +50,8 @@ export const searchGlobalBookmark = createAsyncThunk('bookmark/searchGlobalBookm
 			const bookmarks = data.filter((el) => el.title.toLowerCase().includes(value) || el.body.toLowerCase().includes(value));
 			const userIds = bookmarks.map(bookmark => bookmark.userId)
 			thunkAPI.dispatch(filterFolders(userIds))
+			console.log("bookmark", bookmarks)
 
-	return bookmarks;
+			
+	return {value, bookmarks};
 });
