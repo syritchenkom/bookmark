@@ -3,7 +3,8 @@ import {
 	List,
 	ListItemButton,
 	ListItemIcon,
-	ListItemText
+	ListItemText,
+	Skeleton
 } from '@mui/material';
 import { Folder } from '@mui/icons-material';
 import { NavLink } from 'react-router-dom';
@@ -11,10 +12,9 @@ import { NavLink } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
 import { fetchFolders } from '../../redux/folder/asyncActions';
 import { selectFolderData } from '../../redux/folder/selectors';
-//??? \/ Test \/
-import { searchBookmark } from '../../redux/bookmark/slice';
 
 const FolderList: FC = () => {
+	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [open] = useState(false);
 
 	const dispatch = useAppDispatch();
@@ -33,10 +33,22 @@ const FolderList: FC = () => {
 	// };
 
 	useEffect(() => {
-		if (!folders?.length) {
-			dispatch(fetchFolders());
-		}
+		const timer: any = setTimeout(() => {
+			if (!folders?.length) {
+				dispatch(fetchFolders());
+				setIsLoading(false);
+			}
+		}, 1000);
+
+		return () => clearTimeout(timer);
 	}, [dispatch, folders?.length]);
+
+	// const skeletons = Array.from(new Array(10)).map((item, index) => (
+	// 	<Skeleton key={index} height={64} />
+	// ));
+	const skeletons = [...new Array(10)].map((_, index) => (
+		<Skeleton key={index} height={64} />
+	));
 
 	/* let activeStyle = {
 		textDecoration: 'underline'
@@ -57,33 +69,31 @@ const FolderList: FC = () => {
 			}}
 			component="nav"
 			aria-labelledby="nested-list-subheader">
-			{folders ? (
-				folders.map((folder) => (
-					<NavLink
-						style={({ isActive }) => {
-							return {
-								display: 'block',
-								margin: '1rem 0',
-								color: 'black',
-								backgroundColor: isActive ? 'skyBlue' : '',
-								borderRadius: '25px 0 0 25px',
-								textDecoration: 'none'
-							};
-						}}
-						to={`/${folder.id}`}
-						// isActive={activeStyle}
-						key={folder.id}>
-						<ListItemButton selected={open}>
-							<ListItemIcon sx={{ minWidth: 40 }}>
-								<Folder />
-							</ListItemIcon>
-							<ListItemText primary={folder.name} />
-						</ListItemButton>
-					</NavLink>
-				))
-			) : (
-				<div>Could not find folders</div>
-			)}
+			{isLoading
+				? skeletons
+				: folders.map((folder) => (
+						<NavLink
+							style={({ isActive }) => {
+								return {
+									display: 'block',
+									margin: '1rem 0',
+									color: 'black',
+									backgroundColor: isActive ? 'skyBlue' : '',
+									borderRadius: '25px 0 0 25px',
+									textDecoration: 'none'
+								};
+							}}
+							to={`/${folder.id}`}
+							// isActive={activeStyle}
+							key={folder.id}>
+							<ListItemButton selected={open}>
+								<ListItemIcon sx={{ minWidth: 40 }}>
+									<Folder />
+								</ListItemIcon>
+								<ListItemText primary={folder.name} />
+							</ListItemButton>
+						</NavLink>
+				  ))}
 		</List>
 	);
 };
