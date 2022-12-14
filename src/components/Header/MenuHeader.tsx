@@ -26,6 +26,12 @@ const MenuHeader: FC = () => {
 		setAnchorElNav(event.currentTarget);
 	};
 
+	//Handle Menu Close
+	const handleMenuClose = () => {
+		setAnchorElNav(null);
+		// handleClick.handleClickAway();
+	};
+
 	// Sort by Name Folder
 	const sortingASCFolders = () => {
 		dispatch(sortFolders());
@@ -48,12 +54,6 @@ const MenuHeader: FC = () => {
 	};
 	const bookmarkModalClose = () => {
 		setAddBookmarkOpen(false);
-	};
-
-	//Handle Menu Close
-	const handleMenuClose = () => {
-		setAnchorElNav(null);
-		// handleClick.handleClickAway();
 	};
 
 	return (
