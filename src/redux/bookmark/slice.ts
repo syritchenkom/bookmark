@@ -10,7 +10,6 @@ const initialState: BookmarkSliceState = {
 	bookmarks: [],
 	searchValue: [],
 	isSearch: false,
-	// searchValue: '',
 	status: Status.LOADING, // loading | success | error
 
 };
