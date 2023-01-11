@@ -9,33 +9,27 @@ import {
 	TableCell,
 	Paper,
 	Skeleton,
-	IconButton,
-	MenuItem,
-	Menu
+	List,
+	ListSubheader
 } from '@mui/material';
-import { InsertDriveFileOutlined, MoreVert } from '@mui/icons-material';
+import { InsertDriveFileOutlined } from '@mui/icons-material';
 
 import { useAppDispatch, useAppSelector } from '../../redux/store';
 import { fetchBookmarks } from '../../redux/bookmark/asyncActions';
-import { deleteBookmark } from '../../redux/bookmark/slice';
 
-import RenameBookmark from './RenameBookmark';
-// import Skeleton from './Skeleton';
+import MenuBookmarks from './MenuBookmarks';
 
 const BookmarkList: FC = () => {
-	const [bookMenu, setBookMenu] = useState<null | HTMLElement>(null);
-	const [renameBookmarkOpen, setRenameBookmarkOpen] = useState<boolean>(false);
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
-	// const params = useParams();
-	// const userId = params.userId
-	const { userId } = useParams();
+	const { userId } = useParams(); // const params = useParams(); const userId = params.userId
 
 	const dispatch = useAppDispatch();
 	const { bookmarks, searchValue, isSearch } = useAppSelector(
 		({ bookmark }) => bookmark
 	);
-	const [activeBookmark, setActiveBookmark] = useState(bookmarks[0]);
+	// const [activeBookmark, setActiveBookmark] = useState(bookmarks[0]);
+
 	//Added variable to search component
 	const currentBookmarks = isSearch ? searchValue : bookmarks;
 
@@ -49,176 +43,81 @@ const BookmarkList: FC = () => {
 		return () => clearTimeout(timer);
 	}, [dispatch, userId]);
 
-	const open = Boolean(bookMenu);
-
-	const handleBookClick = (
-		event: React.MouseEvent<HTMLElement>,
-		index: number
-	) => {
-		setActiveBookmark(bookmarks![index]);
-		setBookMenu(event.currentTarget);
-	};
-
-	const handleBookClose = () => {
-		setBookMenu(null);
-	};
-
-	const renameBookmarkElement = () => {
-		setRenameBookmarkOpen((renameBookmarkOpen) => !renameBookmarkOpen);
-	};
-
-	const bookmarkModalClose = () => {
-		setRenameBookmarkOpen(false);
-	};
-
-	const handleRemoveBookmark = (id: number) => {
-		dispatch(
-			deleteBookmark({
-				id,
-				userId: 1,
-				title: '',
-				body: ''
-			})
-		);
-	};
-
-	// Problem with skeletons
-	/* const skeletons = [...new Array(10)].map((_, index) => (
-		<Skeleton key={index} />
-	)); */
-	const skeletons = Array.from(new Array(2)).map((item, index) => (
-		<Skeleton key={index} variant="rounded" width={762} height={110} />
+	const skeletons = [...new Array(10)].map((_, index) => (
+		<TableRow key={index}>
+			<TableCell sx={{ padding: '1px' }}>
+				<Skeleton variant="rounded" width={762} height={110} />
+			</TableCell>
+		</TableRow>
 	));
 
 	return (
-		<TableContainer component={Paper} sx={{ marginTop: '6rem' }}>
-			<Table
-				sx={{
-					minWidth: '300px',
-					borderRadius: '1rem 1rem',
-					boxShadow: 'inset 0px 0px 6px 0px #dadada'
-				}}>
-				<TableBody>
-					{/* Data from jsonplaceholder.typicode.com */}
-					{isLoading
-						? skeletons
-						: currentBookmarks.map((bookmark, index) => (
-								<TableRow
-									hover
-									key={bookmark.id}
-									sx={{
-										display: 'flex',
-										// alignItems: 'center',
-										'&:last-child td, &:last-child th': { border: 0 }
-									}}>
-									<TableCell
+		<List
+			sx={{
+				maxHeight: 550,
+				marginTop: '4rem',
+				bgcolor: 'background.paper',
+				position: 'relative',
+				overflow: 'auto'
+			}}
+			component={Paper}
+			aria-labelledby="nested-list-subheader"
+			subheader={
+				<ListSubheader component="div" id="nested-list-subheader">
+					Bookmarks List Items
+				</ListSubheader>
+			}>
+			<TableContainer>
+				<Table>
+					<TableBody>
+						{isLoading
+							? skeletons
+							: currentBookmarks.map((bookmark, index) => (
+									<TableRow
+										hover
+										key={bookmark.id}
 										sx={{
-											display: 'flex',
-											alignItems: 'center'
-										}}
-										// component="th"
-										scope="row">
-										<InsertDriveFileOutlined sx={{ marginRight: '1rem' }} />
-									</TableCell>
-									<TableCell
-										sx={{
-											display: 'flex',
-											alignItems: 'center'
-										}}
-										// component="th"
-										scope="row">
-										Title: {bookmark.title}
-										<br />
-										Body: {bookmark.body}
-									</TableCell>
-									<TableCell sx={{ flexGrow: 1 }} />
-									<TableCell
-										sx={{
-											display: { xs: 'flex' }
-											// display: 'flex'
+											display: 'flex'
+											// alignItems: 'center',
+											// '&:last-child td, &:last-child th': { border: 0 }
 										}}>
-										<IconButton
-											size="large" //?
-											title="bookmark menu" //?
-											aria-label="more"
-											aria-controls="bookmark-menu"
-											// id="long-button"
-											// aria-controls={open ? 'long-menu' : undefined}
-											// aria-expanded={open ? 'true' : undefined}
-											aria-haspopup="true"
-											onClick={(e) => handleBookClick(e, index)}
-											color="inherit">
-											<MoreVert />
-										</IconButton>
-									</TableCell>
-								</TableRow>
-						  ))}
-				</TableBody>
-			</Table>
-			<Menu
-				anchorEl={bookMenu}
-				anchorOrigin={{
-					vertical: 'top',
-					horizontal: 'right'
-				}}
-				id="menu-bookmark"
-				keepMounted
-				transformOrigin={{
-					vertical: 'top',
-					horizontal: 'right'
-				}}
-				open={open}
-				onClose={handleBookClose}>
-				{/* Rename Bookmark Modal Card */}
-				<MenuItem onClick={renameBookmarkElement}>Rename</MenuItem>
-				{/* Delete Bookmark Card */}
-				<MenuItem
-					divider
-					onClick={() => handleRemoveBookmark(activeBookmark!.id)}>
-					Delete
-				</MenuItem>
-
-				<MenuItem
-				// onClick={handleProfileMenuOpen}
-				>
-					Cut
-				</MenuItem>
-				<MenuItem
-				// onClick={handleProfileMenuOpen}
-				>
-					Copy
-				</MenuItem>
-				<MenuItem
-					divider
-					// onClick={handleProfileMenuOpen}
-				>
-					Paste
-				</MenuItem>
-				<MenuItem
-				// onClick={handleProfileMenuOpen}
-				>
-					Open in new tab
-				</MenuItem>
-				<MenuItem
-				// onClick={handleProfileMenuOpen}
-				>
-					Open in new window
-				</MenuItem>
-				<MenuItem
-				// onClick={handleProfileMenuOpen}
-				>
-					Open in Incognito window
-				</MenuItem>
-			</Menu>
-			{renameBookmarkOpen && (
-				<RenameBookmark
-					renameBookmarkOpen={renameBookmarkOpen}
-					setRenameBookmarkOpen={setRenameBookmarkOpen}
-					onClose={bookmarkModalClose}
-					bookmark={activeBookmark!}
-				/>
-			)}
-		</TableContainer>
+										<TableCell
+											sx={{
+												display: 'flex',
+												alignItems: 'center'
+											}}
+											// component="th"
+											// scope="row"
+										>
+											<InsertDriveFileOutlined sx={{ marginRight: '1rem' }} />
+										</TableCell>
+										{/* Bookmarks Title & Body */}
+										<TableCell
+											sx={{
+												display: 'flex',
+												alignItems: 'center'
+											}}
+											// component="th"
+											scope="row">
+											Title: {bookmark.title}
+											<br />
+											Body: {bookmark.body}
+										</TableCell>
+										<TableCell sx={{ flexGrow: 1 }} />
+										{/* Menu Bookmarks */}
+										<TableCell
+											sx={{
+												display: { xs: 'flex' },
+												alignItems: 'center'
+											}}>
+											<MenuBookmarks />
+										</TableCell>
+									</TableRow>
+							  ))}
+					</TableBody>
+				</Table>
+			</TableContainer>
+		</List>
 	);
 };
 
