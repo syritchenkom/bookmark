@@ -6,22 +6,18 @@ import {
 	Box,
 	Toolbar,
 	Switch,
-	Typography,
 	InputBase,
-	Avatar,
-	FormControlLabel,
-	ListItemButton
+	FormControlLabel
 } from '@mui/material';
-
 import { Search } from '@mui/icons-material';
 
-import GoogleLogo from '../../assets/logo/googleLogo.png';
 import ToggleColorMode from './ToggleColorMode';
+import MenuHeader from './MenuHeader';
 
 import { useAppDispatch } from '../../redux/store';
 import { searchGlobalBookmark } from '../../redux/bookmark/asyncActions';
 import { searchBookmark } from '../../redux/bookmark/slice';
-import MenuHeader from './MenuHeader';
+import Logo from './Logo';
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
 	justifyContent: 'flex-end'
@@ -39,7 +35,7 @@ const SearchIconItem = styled('div')(({ theme }) => ({
 	}
 }));
 
-const SearchIconStyled = styled('div')(({ theme }) => ({
+const SearchIconStyled: any = styled('div')(({ theme }) => ({
 	position: 'relative',
 	borderRadius: '1.5rem',
 	backgroundColor: alpha(theme.palette.common.white, 0.15),
@@ -87,14 +83,8 @@ const Header: FC = () => {
 
 	const [checkedSwitch, setCheckedSwitch] = useState<boolean>(false);
 	const [searchValue, setSearchValue] = useState<string>('');
-	const [openMenuHeader] = useState<boolean>(false);
 
 	// Switch Search
-	// const changeSearchSwitch = (e: React.ChangeEvent<HTMLInputElement>) => {
-	// 	// send information about search switch
-	// 	setCheckedSwitch(e.target.checked);
-	// 	// console.log(e.target.checked);
-	// };
 	const changeSearchSwitch = (e: React.ChangeEvent<HTMLInputElement>) =>
 		setCheckedSwitch((value) => !value);
 
@@ -117,12 +107,6 @@ const Header: FC = () => {
 		);
 	};
 
-	// Handle Menu Header
-	// const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-	// 	// setAnchorElNav(event.currentTarget);
-	// 	openMenuHeader();
-	// };
-
 	const mobileSearchId = 'primary-search-account-menu-mobile';
 	const RenderSearch = (
 		<>
@@ -143,25 +127,14 @@ const Header: FC = () => {
 	return (
 		<AppBar position="fixed">
 			<StyledToolbar>
+				<Logo />
+				<Box sx={{ flexGrow: 1 }} />
+				{/* Switch to local or global search */}
 				<Box
-					component="div"
-					sx={{ flexGrow: 1, display: 'flex', alignItems: 'center' }}>
-					<Avatar
-						src={GoogleLogo}
-						alt="Google logo"
-						sx={{ width: 24, height: 24, marginRight: 1 }}
-					/>
-					<Typography
-						variant="h6"
-						noWrap
-						component="div"
-						// sx={{ display: { xs: 'block' } }
-					>
-						Bookmarks
-					</Typography>
-				</Box>
-				{/* Switch to global or local search */}
-				<Box sx={{ width: '12%', textAlign: 'center' }}>
+					sx={{
+						// width: '12%',
+						textAlign: 'center'
+					}}>
 					<FormControlLabel
 						value="bottom"
 						control={
@@ -183,24 +156,15 @@ const Header: FC = () => {
 					{RenderSearch}
 				</SearchIconStyled>
 				<Box sx={{ flexGrow: 1 }} />
+
 				{/* Switch Dark or White background */}
 				<ToggleColorMode />
-				{/* <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
-					<WbSunnyIconStyled />
-					<NightlightIconStyled />
-				</Box>
-				 <FormGroup>
-					<FormControlLabel
-						control={<MaterialUISwitch sx={{ m: 1 }} defaultChecked />}
-						label="MUI switch"
-					/>
-				</FormGroup> */}
+
 				{/* Menu Header */}
-				<ListItemButton selected={openMenuHeader}>
-					<MenuHeader />
-				</ListItemButton>
+				<MenuHeader />
 			</StyledToolbar>
 		</AppBar>
+		// </ThemeProvider>
 	);
 };
 
