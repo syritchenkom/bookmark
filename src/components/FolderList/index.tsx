@@ -4,6 +4,7 @@ import {
 	ListItemButton,
 	ListItemIcon,
 	ListItemText,
+	ListSubheader,
 	Skeleton
 } from '@mui/material';
 import { Folder } from '@mui/icons-material';
@@ -21,16 +22,7 @@ const FolderList: FC = () => {
 	// const folders = useAppSelector(({ folder }) => folder.folders);
 	const folders = useAppSelector(selectFolderData);
 
-	// const activeStyle = {
-	// 	display: 'block',
-	// 	margin: '1rem 0',
-	// 	color: 'black',
-	// 	// backgroundColor: isActive ? 'skyBlue' : '',
-	// 	// backgroundColor: 'skyBlue',
-	// 	backgroundColor: searchGlobalBookmark ? '' : 'skyBlue',
-	// 	borderRadius: '25px 0 0 25px',
-	// 	textDecoration: 'none'
-	// };
+	const toggleTheme = useAppSelector(({ theme }) => theme.darkTheme);
 
 	useEffect(() => {
 		const timer: any = setTimeout(() => {
@@ -50,10 +42,6 @@ const FolderList: FC = () => {
 		<Skeleton key={index} height={64} />
 	));
 
-	/* let activeStyle = {
-		textDecoration: 'underline'
-	}; */
-
 	return (
 		<List
 			sx={{
@@ -68,32 +56,62 @@ const FolderList: FC = () => {
 				'& ul': { padding: 0 }
 			}}
 			component="nav"
-			aria-labelledby="nested-list-subheader">
+			aria-labelledby="nested-list-subheader"
+			subheader={
+				<ListSubheader component="div" id="nested-list-subheader">
+					Folder List Items
+				</ListSubheader>
+			}>
 			{isLoading
 				? skeletons
-				: folders.map((folder) => (
-						<NavLink
-							style={({ isActive }) => {
-								return {
-									display: 'block',
-									margin: '1rem 0',
-									color: 'black',
-									backgroundColor: isActive ? 'skyBlue' : '',
-									borderRadius: '25px 0 0 25px',
-									textDecoration: 'none'
-								};
-							}}
-							to={`/${folder.id}`}
-							// isActive={activeStyle}
-							key={folder.id}>
-							<ListItemButton selected={open}>
-								<ListItemIcon sx={{ minWidth: 40 }}>
-									<Folder />
-								</ListItemIcon>
-								<ListItemText primary={folder.name} />
-							</ListItemButton>
-						</NavLink>
-				  ))}
+				: folders.map(
+						(folder: {
+							id: React.Key | null | undefined;
+							name:
+								| boolean
+								| React.ReactChild
+								| React.ReactFragment
+								| React.ReactPortal
+								| null
+								| undefined;
+						}) => (
+							<NavLink
+								to={`/${folder.id}`}
+								key={folder.id}
+								style={({ isActive }) => {
+									if (toggleTheme) {
+										return isActive
+											? {
+													display: 'block',
+													color: 'black',
+													backgroundColor: 'skyBlue',
+													textDecoration: 'none',
+													borderRadius: '25px 0 0 25px'
+											  }
+											: {
+													color: 'white',
+													textDecoration: 'none'
+											  };
+									}
+									return isActive
+										? {
+												display: 'block',
+												color: 'black',
+												backgroundColor: 'skyBlue',
+												borderRadius: '25px 0 0 25px',
+												textDecoration: 'none'
+										  }
+										: { color: 'black', textDecoration: 'none' };
+								}}>
+								<ListItemButton selected={open}>
+									<ListItemIcon sx={{ minWidth: 40 }}>
+										<Folder />
+									</ListItemIcon>
+									<ListItemText primary={folder.name} />
+								</ListItemButton>
+							</NavLink>
+						)
+				  )}
 		</List>
 	);
 };
