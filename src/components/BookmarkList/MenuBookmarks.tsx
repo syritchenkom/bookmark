@@ -1,24 +1,20 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 
 import { MenuItem, Menu, Box, IconButton } from '@mui/material';
 
 import { useAppDispatch, useAppSelector } from '../../redux/store';
-import { fetchBookmarks } from '../../redux/bookmark/asyncActions';
 import RenameBookmark from './RenameBookmark';
 import { deleteBookmark } from '../../redux/bookmark/slice';
 import { MoreVert } from '@mui/icons-material';
 
-const MenuBookmarks = () => {
+const MenuBookmarks: FC = () => {
 	const [bookMenu, setBookMenu] = useState<null | HTMLElement>(null);
 	const [renameBookmarkOpen, setRenameBookmarkOpen] = useState<boolean>(false);
-	const [isLoading, setIsLoading] = useState<boolean>(true);
 
 	const dispatch = useAppDispatch();
-	const { bookmarks, searchValue, isSearch } = useAppSelector(
-		({ bookmark }) => bookmark
-	);
+	const { bookmarks } = useAppSelector(({ bookmark }) => bookmark);
 
-	const [activeBookmark, setActiveBookmark] = useState(bookmarks[0]);
+	const [activeBookmark] = useState(bookmarks[0]);
 
 	const open = Boolean(bookMenu);
 
@@ -33,7 +29,7 @@ const MenuBookmarks = () => {
 	const renameBookmarkElement = () => {
 		setRenameBookmarkOpen((renameBookmarkOpen) => !renameBookmarkOpen);
 		handleBookClose();
-	}; 
+	};
 
 	const bookmarkModalClose = () => {
 		setRenameBookmarkOpen(false);
@@ -129,15 +125,6 @@ const MenuBookmarks = () => {
 				/>
 			)}
 		</Box>
-
-		// {renameBookmarkOpen && (
-		// 	<RenameBookmark
-		// 		renameBookmarkOpen={renameBookmarkOpen}
-		// 		setRenameBookmarkOpen={setRenameBookmarkOpen}
-		// 		onClose={bookmarkModalClose}
-		// 		bookmark={activeBookmark!}
-		// 	/>
-		// )}
 	);
 };
 

@@ -3,17 +3,10 @@ import { styled } from '@mui/material/styles';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
-import { Brightness4, Brightness7 } from '@mui/icons-material';
-
-// const WbSunnyIconStyled = styled('WbSunny')(({ theme }) => ({
-// 	cursor: 'pointer',
-// 	'&:hover': { opacity: '50%' }
-// }));
-
-// const NightlightIconStyled = styled('Nightlight')(({ theme }) => ({
-// 	cursor: 'pointer',
-// 	'&:hover': { opacity: '50%' }
-// }));
+import { toggleTheme } from '../../redux/theme/slice';
+import { useAppSelector, useAppDispatch } from '../../redux/store';
+// import { darkTheme, lightTheme } from '../../components/Theme/Theme';
+// import { darkTheme, lightTheme } from '../Theme/Theme';
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 	width: 62,
@@ -62,14 +55,37 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 	}
 }));
 
-const ToggleColorMode = () => {
+const ToggleColorMode: React.FC = () => {
+	// get theme from store
+	const theme = useAppSelector((state) => state.theme);
+
+	//initial dispatch
+	const dispatch = useAppDispatch();
 	return (
 		<FormGroup>
 			<FormControlLabel
-				control={<MaterialUISwitch sx={{ m: 1 }} defaultChecked />}
-				label=""
+				control={
+					<MaterialUISwitch
+						checked={theme.darkTheme}
+						onChange={() => dispatch(toggleTheme())}
+						// sx={{ m: 1 }}
+						// defaultChecked
+					/>
+				}
+				label={false}
 			/>
 		</FormGroup>
+		/* ===================== */
+		/* <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
+					<WbSunnyIconStyled />
+					<NightlightIconStyled />
+				</Box>
+				 <FormGroup>
+					<FormControlLabel
+						control={<MaterialUISwitch sx={{ m: 1 }} defaultChecked />}
+						label="MUI switch"
+					/>
+				</FormGroup> */
 	);
 };
 
