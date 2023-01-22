@@ -5,6 +5,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import { toggleTheme } from '../../redux/theme/slice';
 import { useAppSelector, useAppDispatch } from '../../redux/store';
+import { ThemeState } from '../../redux/theme/type';
 // import { darkTheme, lightTheme } from '../../components/Theme/Theme';
 // import { darkTheme, lightTheme } from '../Theme/Theme';
 
@@ -75,17 +76,6 @@ const ToggleColorMode: React.FC = () => {
 				label={false}
 			/>
 		</FormGroup>
-		/* ===================== */
-		/* <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
-					<WbSunnyIconStyled />
-					<NightlightIconStyled />
-				</Box>
-				 <FormGroup>
-					<FormControlLabel
-						control={<MaterialUISwitch sx={{ m: 1 }} defaultChecked />}
-						label="MUI switch"
-					/>
-				</FormGroup> */
 	);
 };
 
