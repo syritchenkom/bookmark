@@ -25,8 +25,10 @@ export const folderSlice = createSlice({
       // const sortBy = action.payload.name;
       // state.folders = state.folders.sort((a, b) => b.name < a.name);
     // ===============
-    console.log(state.folders.sort((a,b) => a.name.localeCompare(b.name)))
+    console.log("state", state)
     state.folders = state.folders.sort((a,b) => a.name.localeCompare(b.name))
+    console.log("state", state)
+
    },
    filterFolders(state, {payload}: PayloadAction<number[]>){
     state.folders = state.folders.filter((folder) => payload.includes(folder.id))
@@ -49,6 +51,11 @@ export const folderSlice = createSlice({
       state.status = Status.ERROR;
       state.folders = [];
     })
+    /* 
+      .addCase(searchGlobalBookmark.pending, (state) => {
+        state.
+      })
+    */
   },
 })
 
