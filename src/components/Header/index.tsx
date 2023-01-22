@@ -85,8 +85,10 @@ const Header: FC = () => {
 	const [searchValue, setSearchValue] = useState<string>('');
 
 	// Switch Search
-	const changeSearchSwitch = (e: React.ChangeEvent<HTMLInputElement>) =>
+	const changeSearchSwitch = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setCheckedSwitch((value) => !value);
+		// setSearchValue(''); reset search input bookmark
+	};
 
 	// Search Bookmark
 	const searchBookmarks = (e: React.ChangeEvent<HTMLInputElement>) => {
