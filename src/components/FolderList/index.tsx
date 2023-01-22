@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import {
 	List,
 	ListItemButton,
@@ -18,12 +18,16 @@ const FolderList: FC = () => {
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [open] = useState(false);
 
+	//========= start redux components
 	const dispatch = useAppDispatch();
 	// const folders = useAppSelector(({ folder }) => folder.folders);
 	const folders = useAppSelector(selectFolderData);
 
+	// const filteredFolders = useMemo(() => folders.filter((name) => name.name));
+
 	const toggleTheme = useAppSelector(({ theme }) => theme.darkTheme);
 
+	// ============end
 	useEffect(() => {
 		const timer: any = setTimeout(() => {
 			if (!folders?.length) {
@@ -31,9 +35,21 @@ const FolderList: FC = () => {
 				setIsLoading(false);
 			}
 		}, 1000);
-
 		return () => clearTimeout(timer);
 	}, [dispatch, folders?.length]);
+
+	/* ============start
+		const [filter, setFilter] = useState("")
+		const allJobs = useSelector(state => state.jobs)
+		const filteredJobs = useMemo(() => allJobs.filter(job => job.startsWith(filter), [filter])	
+	 	const globalFolderSearch = () => {
+			if (event.target.value) {
+      		const searchText = event.target.value;
+      		const matchedJobs = jobs.filter(job => job.jobTitle.toLowerCase().includes(searchText.toLowerCase()));
+      		dispatch(handleSearchJobs(matchedJobs));
+    		}
+		} 
+	============end */
 
 	// const skeletons = Array.from(new Array(10)).map((item, index) => (
 	// 	<Skeleton key={index} height={64} />
