@@ -46,11 +46,11 @@ export const bookmarkSlice = createSlice({  //postsSlice
 		},
 		searchBookmark: (state, action: PayloadAction<string>) => {
 			const value = action.payload.toLowerCase();
-			console.log('value', value);
+			console.log('searchBookmark_value:', value);
 			const bookmarks = state.bookmarks.filter((el) => el.title.toLowerCase().includes(value) || el.body.toLowerCase().includes(value));
 			state.isSearch = !!value;
 			state.searchValue = bookmarks;
-			console.log('bookmarks', bookmarks);
+			console.log('searchBookmark_bookmarks:', bookmarks);
 		} 
 	},
 	extraReducers: (builder) => {
@@ -76,11 +76,21 @@ export const bookmarkSlice = createSlice({  //postsSlice
 			.addCase(searchGlobalBookmark.fulfilled, (state, action) => {
 				// state.bookmarks = action.payload; 
 				const {value, bookmarks} = action.payload
+				console.log("valueGlobal", value);
+				console.log("GlobalBookmarks", bookmarks);
 			   state.status = Status.SUCCESS;
 				state.isSearch = !!value;
 				state.searchValue = bookmarks;
+				console.log("bookmarksGlobal", bookmarks);
 				console.log("searchGlobalBookmark", action.payload)
 			})
+			/* 
+			.addCase(searchGlobalBookmark.pending, (state) => {
+				state.isSearch = true;
+			})
+			.addCase(searchGlobalBookmark.pending, (state) => {
+				state.isSearch = true;
+			}) */
 	}
 });
 
