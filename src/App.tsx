@@ -3,12 +3,14 @@ import { Route, Routes } from 'react-router-dom';
 import Home from './pages/Home/Home';
 import BookmarkList from './components/BookmarkList';
 import NotFound from './pages/NotFound';
+import { FavoriteList } from './components/FavoriteList/FavoriteList';
 
 const App = () => {
 	return (
 		<Routes>
 			<Route path="/" element={<Home />}>
 				<Route path=":userId" element={<BookmarkList />} />
+				<Route path="*" element={<NotFound />} />
 				<Route
 					index
 					element={
@@ -31,7 +33,8 @@ const App = () => {
 				{/* <Route path="*" element={<Navigate to="/" replace />} /> */}
 				{/* <Route path="/*" element={<NotFound />} /> */}
 			</Route>
-			<Route path="*/*" element={<NotFound />} />
+			<Route path="/favorite" element={<FavoriteList />} />
+			<Route path="*" element={<NotFound />} />
 		</Routes>
 	);
 };
