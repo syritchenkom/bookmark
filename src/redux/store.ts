@@ -3,15 +3,15 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import folder from './folder/slice'
 import bookmark from './bookmark/slice';
 import theme from './theme/slice';
+import favorites from './favorites/slice';
 
 
 export const store = configureStore({
   reducer: {
     folder,
-    bookmark,
-    theme
-    // bookmarkStore: bookmarkReducer
-
+    bookmark, // bookmarkStore: bookmarkReducer
+    theme,
+    favorites
   },
 });
 
