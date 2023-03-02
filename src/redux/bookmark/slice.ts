@@ -35,7 +35,7 @@ export const bookmarkSlice = createSlice({  //postsSlice
 				existingBookmark.body = body;
 			}
 		},
-		deleteBookmark: (state: { bookmarks: any[]; }, action: PayloadAction <Bookmark>) => {
+		deleteBookmark: (state: { bookmarks: Bookmark[]; }, action: PayloadAction <Bookmark>) => {
 			const {id} = action.payload;
 			console.log("action.payload", action.payload)
 			const existingBookmark = state.bookmarks.find((bookmark: { id: number; }) => bookmark.id === id);
@@ -43,7 +43,7 @@ export const bookmarkSlice = createSlice({  //postsSlice
 				state.bookmarks = state.bookmarks.filter((bookmark: { id: number; }) => bookmark.id !== id)
 			}			
 		},
-		searchBookmark: (state: { bookmarks: any[]; isSearch: boolean; searchValue: any; }, action: PayloadAction<string>) => {
+		searchBookmark: (state: { bookmarks: Bookmark[]; isSearch: boolean; searchValue: Bookmark[]; }, action: PayloadAction<string>) => {
 			const value = action.payload.toLowerCase();
 			const bookmarks = state.bookmarks.filter((el: { title: string; body: string; }) => el.title.toLowerCase().includes(value) || el.body.toLowerCase().includes(value));
 			state.isSearch = !!value;
