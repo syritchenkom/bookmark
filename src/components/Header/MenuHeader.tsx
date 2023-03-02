@@ -6,8 +6,9 @@ import { MoreVert } from '@mui/icons-material';
 import AddFolder from './AddFolder';
 import AddBookmark from './AddBookmark';
 
-import { useAppDispatch } from '../../redux/store';
+import { useAppDispatch, useAppSelector } from '../../redux/store';
 import { sortFolders } from '../../redux/folder/slice';
+import { NavLink } from 'react-router-dom';
 
 // interface MenuHeaderProps {
 // 	handleClick: any;
@@ -20,6 +21,8 @@ const MenuHeader: FC = () => {
 	const open = Boolean(anchorElNav);
 	const [addFolderOpen, setAddFolderOpen] = useState<boolean>(false);
 	const [addBookmarkOpen, setAddBookmarkOpen] = useState<boolean>(false);
+
+	const toggleTheme = useAppSelector(({ theme }) => theme.darkTheme);
 
 	//Handle Click Away
 	const handleClickAway = (event: any) => {
@@ -55,6 +58,16 @@ const MenuHeader: FC = () => {
 	const bookmarkModalClose = () => {
 		setAddBookmarkOpen(false);
 	};
+
+	//Add style to Favorite link
+	let activeStyle = {
+		color: 'black',
+		textDecoration: "none"
+	}
+	let activeBlackStyle = {
+		color: 'white',
+		textDecoration: 'none'
+	}
 
 	return (
 		<Box sx={{ display: { xs: 'flex' } }}>
@@ -96,7 +109,7 @@ const MenuHeader: FC = () => {
 				/>
 				{/* End Add new Bookmark */}
 				{/* Start Add new Folder */}
-				<MenuItem divider onClick={addNewFolder}>
+				<MenuItem onClick={addNewFolder}>
 					Add new Folder
 				</MenuItem>
 				<AddFolder
@@ -105,6 +118,22 @@ const MenuHeader: FC = () => {
 					onClose={folderModalClose}
 				/>
 				{/* End Add new Folder */}
+				{/* ========================== */}
+				{/* Start Add Favorite Folder */}
+				<MenuItem divider>
+					<NavLink to="favorite" style={({ isActive }) => {
+									if (toggleTheme) {
+										return isActive
+											? activeStyle
+											: activeBlackStyle;
+									}
+									return activeStyle
+								}}>
+						Favorite Bookmark
+					</NavLink>
+				</MenuItem>
+				{/* End Add Favorite Folder */}
+				{/* =========================== */}
 				<MenuItem disabled onClick={handleMenuClose}>
 					Import Bookmarks
 				</MenuItem>
