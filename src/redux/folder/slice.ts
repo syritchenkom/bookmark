@@ -6,6 +6,7 @@ const initialState: FolderSliceState  = {
   folders: [],
   filterFolders: [],
   // sortBy: "name",
+  searchGlobal: false,
   status: Status.LOADING, // loading | success | error
 }
 
@@ -31,9 +32,13 @@ export const folderSlice = createSlice({
 
    },
    filterFolders(state, {payload}: PayloadAction<number[]>){
-    state.folders = state.folders.filter((folder) => payload.includes(folder.id))
-    // state.filterFolders = state.folders;
-    state.folders = state.filterFolders;  
+    //??????\/
+    // state.folders = state.folders.filter((folder) => payload.includes(folder.id))
+    state.filterFolders = state.folders.filter((folder) => payload.includes(folder.id));
+    state.folders = state.filterFolders;
+    state.searchGlobal = true;
+    console.log("searchGlobal", state.searchGlobal)
+    
    }
   },
   extraReducers: (builder) => {
@@ -51,11 +56,6 @@ export const folderSlice = createSlice({
       state.status = Status.ERROR;
       state.folders = [];
     })
-    /* 
-      .addCase(searchGlobalBookmark.pending, (state) => {
-        state.
-      })
-    */
   },
 })
 
