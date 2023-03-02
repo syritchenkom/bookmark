@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { filterFolders } from "../folder/slice";
+import { bookmarkSlice } from "./slice";
 import { Bookmark } from "./types";
 
 
@@ -46,12 +47,13 @@ export const searchGlobalBookmark = createAsyncThunk('bookmark/searchGlobalBookm
 		`https://jsonplaceholder.typicode.com/posts`
 	);
 	const value = title.toLowerCase();
-			console.log('value', value);
-			const bookmarks = data.filter((el) => el.title.toLowerCase().includes(value) || el.body.toLowerCase().includes(value));
-			const userIds = bookmarks.map(bookmark => bookmark.userId)
-			thunkAPI.dispatch(filterFolders(userIds))
-			console.log("bookmark", bookmarks)
-
-			
+	const bookmarks = data.filter((el) => el.title.toLowerCase().includes(value) || el.body.toLowerCase().includes(value));
+	const userIds = bookmarks.map(bookmark => bookmark.userId)
+	thunkAPI.dispatch(filterFolders(userIds))
+	
 	return {value, bookmarks};
 });
+
+export const updateScrollBookmark = createAsyncThunk('bookmark/updateScrollBookmark', async(position: number, thunkAPI) => {
+	thunkAPI.dispatch(bookmarkSlice.actions.updateBookmark(position));
+})
