@@ -79,11 +79,11 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const Header: FC = () => {
-	const dispatch = useAppDispatch();
-
 	const [checkedSwitch, setCheckedSwitch] = useState<boolean>(false);
 	const [searchValue, setSearchValue] = useState<string>('');
 
+	const dispatch = useAppDispatch();
+	
 	// Switch Search
 	const changeSearchSwitch = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setCheckedSwitch((value) => !value);
