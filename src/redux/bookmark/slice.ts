@@ -1,57 +1,58 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {Bookmark, BookmarkSliceState, Status} from './types';
-import { fetchBookmarks, renameBookmark, searchGlobalBookmark 
-} from './asyncActions';
+import {fetchBookmarks, renameBookmark, searchGlobalBookmark} from './asyncActions';
 // import AddBookmark from '../../components/Header/AddBookmark';
 
 
 
 const initialState: BookmarkSliceState = {
 	bookmarks: [],
+	filterBookmarks: [],
 	searchValue: [],
 	isSearch: false,
 	status: Status.LOADING, // loading | success | error
-
+	position: 0,
 };
 
 export const bookmarkSlice = createSlice({  //postsSlice
 	name: 'bookmark',
 	initialState,
 	reducers: {
-		setBookmarks: (state, action: PayloadAction<Bookmark[]>) => {
+		setBookmarks: (state: { bookmarks: Bookmark[]; }, action: PayloadAction<Bookmark[]>) => {
 			console.log('action.payload setBookmarks', action.payload);
 			// state.bookmarks.push(action.payload);
 			state.bookmarks = action.payload;
 		},
-		addBookmark: (state, action: PayloadAction<Bookmark>) => {
-			// console.log('addBookmark', state, action, action.payload);
+		addBookmark: (state: { bookmarks: Bookmark[]; }, action: PayloadAction<Bookmark>) => {
 			state.bookmarks.push({...action.payload});
-			// state.bookmarks = [action.payload, ...state.bookmarks];
 		},
-		changeBookmark: (state, action: PayloadAction<Bookmark>) => {
+		changeBookmark: (state: { bookmarks: Bookmark[]; }, action: PayloadAction<Bookmark>) => {
 			// const {userId, id, title, body} = action.payload;
 			const { id, title, body} = action.payload;
-			const existingBookmark = state.bookmarks.find(bookmark => bookmark.id === id);
+			const existingBookmark = state.bookmarks.find((bookmark: { id: number; }) => bookmark.id === id);
 			if(existingBookmark){
 				existingBookmark.title = title;
 				existingBookmark.body = body;
 			}
 		},
-		deleteBookmark: (state, action: PayloadAction <Bookmark>) => {
+		deleteBookmark: (state: { bookmarks: any[]; }, action: PayloadAction <Bookmark>) => {
 			const {id} = action.payload;
-			const existingBookmark = state.bookmarks.find(bookmark => bookmark.id === id);
+			console.log("action.payload", action.payload)
+			const existingBookmark = state.bookmarks.find((bookmark: { id: number; }) => bookmark.id === id);
 			if(existingBookmark){
-				state.bookmarks = state.bookmarks.filter((bookmark) => bookmark.id !== id)
+				state.bookmarks = state.bookmarks.filter((bookmark: { id: number; }) => bookmark.id !== id)
 			}			
 		},
-		searchBookmark: (state, action: PayloadAction<string>) => {
+		searchBookmark: (state: { bookmarks: any[]; isSearch: boolean; searchValue: any; }, action: PayloadAction<string>) => {
 			const value = action.payload.toLowerCase();
-			console.log('searchBookmark_value:', value);
-			const bookmarks = state.bookmarks.filter((el) => el.title.toLowerCase().includes(value) || el.body.toLowerCase().includes(value));
+			const bookmarks = state.bookmarks.filter((el: { title: string; body: string; }) => el.title.toLowerCase().includes(value) || el.body.toLowerCase().includes(value));
 			state.isSearch = !!value;
 			state.searchValue = bookmarks;
-			console.log('searchBookmark_bookmarks:', bookmarks);
-		} 
+		},
+		updateBookmark: (state, action) => {
+			state.position = action.payload;
+		}
+
 	},
 	extraReducers: (builder) => {
 		// Add reducers for additional action types here, and handle loading state as needed
@@ -73,31 +74,24 @@ export const bookmarkSlice = createSlice({  //postsSlice
 				state.status = Status.SUCCESS;
 				// state.bookmarks = action.payload; //?????????
 		})
+			/*.addCase(searchGlobalBookmark.pending, (state) => {state.isSearch = true;}) */
 			.addCase(searchGlobalBookmark.fulfilled, (state, action) => {
 				// state.bookmarks = action.payload; 
 				const {value, bookmarks} = action.payload
-				console.log("valueGlobal", value);
-				console.log("GlobalBookmarks", bookmarks);
 			   state.status = Status.SUCCESS;
 				state.isSearch = !!value;
 				state.searchValue = bookmarks;
-				console.log("bookmarksGlobal", bookmarks);
-				console.log("searchGlobalBookmark", action.payload)
 			})
-			/* 
-			.addCase(searchGlobalBookmark.pending, (state) => {
-				state.isSearch = true;
-			})
-			.addCase(searchGlobalBookmark.pending, (state) => {
-				state.isSearch = true;
+			/* .addCase(updateScrollBookmark.fulfilled, (state, action) => {
+				state.position = action.payload
 			}) */
 	}
 });
 
 export const getBookmarkStatus = (state: any) => state.bookmarks.status; 
-export const getBookmarkError = (state: any) => state.bookmarks.error; 
+export const getBookmarkError = (state: any) => state.bookmarks.error;
 
 // Action creators are generated for each case reducer function
-export const { setBookmarks, addBookmark, changeBookmark, deleteBookmark, searchBookmark } = bookmarkSlice.actions;
+export const { setBookmarks, addBookmark, changeBookmark, deleteBookmark, searchBookmark, updateBookmark } = bookmarkSlice.actions;
 
 export default bookmarkSlice.reducer;
