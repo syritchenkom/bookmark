@@ -46,7 +46,7 @@ const RenameBookmark: FC<RenameBookmarkProps> = ({
 	onClose,
 	bookmark
 }) => {
-	console.log('bookmark', bookmark);
+	// console.log('bookmark', bookmark);
 	// const { userId } = useParams();
 	const dispatch = useAppDispatch();
 
