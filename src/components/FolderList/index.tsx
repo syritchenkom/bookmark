@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import {
 	List,
 	ListItemButton,
@@ -7,12 +7,13 @@ import {
 	ListSubheader,
 	Skeleton
 } from '@mui/material';
-import { Folder } from '@mui/icons-material';
+import { Folder as FolderIcon } from '@mui/icons-material';
 import { NavLink } from 'react-router-dom';
 
 import { useAppDispatch, useAppSelector } from '../../redux/store';
 import { fetchFolders } from '../../redux/folder/asyncActions';
 import { selectFolderData } from '../../redux/folder/selectors';
+import { Folder } from '../../redux/folder/types';
 
 const FolderList: FC = () => {
 	const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -22,8 +23,16 @@ const FolderList: FC = () => {
 	const dispatch = useAppDispatch();
 	// const folders = useAppSelector(({ folder }) => folder.folders);
 	const folders = useAppSelector(selectFolderData);
+	const { filterFolders, searchGlobal } = useAppSelector(
+		(state) => state.folder
+	);
 
-	// const filteredFolders = useMemo(() => folders.filter((name) => name.name));
+	const data: Folder[] = searchGlobal ? filterFolders : folders;
+
+	/* const dataFiltered = data
+		.slice()
+	 	.sort((a, b) => a.name.localeCompare(b.name));
+	*/
 
 	const toggleTheme = useAppSelector(({ theme }) => theme.darkTheme);
 
@@ -37,19 +46,6 @@ const FolderList: FC = () => {
 		}, 1000);
 		return () => clearTimeout(timer);
 	}, [dispatch, folders?.length]);
-
-	/* ============start
-		const [filter, setFilter] = useState("")
-		const allJobs = useSelector(state => state.jobs)
-		const filteredJobs = useMemo(() => allJobs.filter(job => job.startsWith(filter), [filter])	
-	 	const globalFolderSearch = () => {
-			if (event.target.value) {
-      		const searchText = event.target.value;
-      		const matchedJobs = jobs.filter(job => job.jobTitle.toLowerCase().includes(searchText.toLowerCase()));
-      		dispatch(handleSearchJobs(matchedJobs));
-    		}
-		} 
-	============end */
 
 	// const skeletons = Array.from(new Array(10)).map((item, index) => (
 	// 	<Skeleton key={index} height={64} />
@@ -80,7 +76,7 @@ const FolderList: FC = () => {
 			}>
 			{isLoading
 				? skeletons
-				: folders.map(
+				: data.map(
 						(folder: {
 							id: React.Key | null | undefined;
 							name:
@@ -121,7 +117,7 @@ const FolderList: FC = () => {
 								}}>
 								<ListItemButton selected={open}>
 									<ListItemIcon sx={{ minWidth: 40 }}>
-										<Folder />
+=										<FolderIcon />
 									</ListItemIcon>
 									<ListItemText primary={folder.name} />
 								</ListItemButton>
