@@ -3,7 +3,7 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import folder from './folder/slice'
 import bookmark from './bookmark/slice';
 import theme from './theme/slice';
-import favorites from './favorites/slice';
+import favorite from './favorite/slice';
 
 
 export const store = configureStore({
@@ -11,7 +11,7 @@ export const store = configureStore({
     folder,
     bookmark, // bookmarkStore: bookmarkReducer
     theme,
-    favorites
+    favorite
   },
 });
 
