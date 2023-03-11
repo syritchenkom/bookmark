@@ -34,7 +34,7 @@ const App = () => {
 				{/* <Route path="/*" element={<NotFound />} /> */}
 			</Route>
 			<Route path="/favorite" element={<Favorite />} />
-			<Route path="*" element={<NotFound />} />
+			<Route path="/*" element={<NotFound />} />
 		</Routes>
 	);
 };
