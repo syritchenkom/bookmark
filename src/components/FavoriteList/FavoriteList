@@ -1,0 +1,138 @@
+import { createSlice } from '@reduxjs/toolkit';
+import { Button } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles({
+  green: {
+    backgroundColor: 'green',
+    color: '#fff',
+  },
+  red: {
+    backgroundColor: 'red',
+    color: '#fff',
+  }
+});
+
+const buttonSlice = createSlice({
+  name: 'button',
+  initialState: false,
+  reducers: {
+    toggleColor: state => !state,
+  },
+});
+
+export const { toggleColor } = buttonSlice.actions;
+
+export const ButtonComponent = () => {
+  const classes = useStyles();
+
+  const isButtonActive = useSelector(state => state.button);
+
+  return (
+    <Button
+      variant="contained"
+      className={isButtonActive ? classes.red : classes.green}
+      onClick={() => dispatch(toggleColor())}>
+      Next
+    </Button>
+  );
+};
+
+//  =====================================================V2
+Create a Redux slice to manage the button color state:
+typescript
+Copy code
+// src/buttonSlice.ts
+
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
+interface ButtonState {
+  color: 'green' | 'red';
+}
+
+const initialState: ButtonState = {
+  color: 'green',
+};
+
+const buttonSlice = createSlice({
+  name: 'button',
+  initialState,
+  reducers: {
+    setColor: (state, action: PayloadAction<'green' | 'red'>) => {
+      state.color = action.payload;
+    },
+  },
+});
+
+
+export const { setColor } = buttonSlice.actions;
+export default buttonSlice.reducer;
+
+//  =================
+Create a Button component that dispatches the setColor action when clicked:
+typescript
+Copy code
+// src/Button.tsx
+
+import { Button as MuiButton } from '@material-ui/core';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from './store';
+import { setColor } from './buttonSlice';
+
+const Button = () => {
+  const dispatch = useDispatch();
+  const color = useSelector((state: RootState) => state.button.color);
+
+  const handleClick = () => {
+    dispatch(setColor('red'));
+  };
+
+  return (
+    <MuiButton
+      variant="contained"
+      color={color}
+      onClick={handleClick}
+    >
+      Next
+    </MuiButton>
+  );
+};
+
+export default Button;
+//  =================
+
+Create a store to combine the buttonSlice with other slices:
+typescript
+Copy code
+// src/store.ts
+
+import { configureStore } from '@reduxjs/toolkit';
+import buttonReducer from './buttonSlice';
+
+const store = configureStore({
+  reducer: {
+    button: buttonReducer,
+  },
+});
+
+export type RootState = ReturnType<typeof store.getState>;
+export default store;
+//  =================
+
+Render the Button component in your app:
+typescript
+Copy code
+// src/App.tsx
+
+import Button from './Button';
+
+const App = () => {
+  return (
+    <div>
+      <Button />
+    </div>
+  );
+};
+
+export default App;
+With these steps, you should now have a Button component that starts with a green background and changes to red when clicked.
