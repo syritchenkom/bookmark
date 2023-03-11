@@ -13,4 +13,5 @@ export enum Status {
 
 export interface FavoritesState {
    favorites: Favorite[];
+   isActive: boolean;
 }
