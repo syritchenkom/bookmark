@@ -117,7 +117,7 @@ const FolderList: FC = () => {
 								}}>
 								<ListItemButton selected={open}>
 									<ListItemIcon sx={{ minWidth: 40 }}>
-=										<FolderIcon />
+										<FolderIcon />
 									</ListItemIcon>
 									<ListItemText primary={folder.name} />
 								</ListItemButton>
