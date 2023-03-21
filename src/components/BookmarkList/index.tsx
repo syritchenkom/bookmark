@@ -1,9 +1,7 @@
-import React, { FC, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { FC, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 import {
-  // IconButton,
-  styled,
   Table,
   TableBody,
   TableContainer,
@@ -13,54 +11,58 @@ import {
   Skeleton,
   List,
   ListSubheader,
-  // useAutocomplete,
   Fab,
-} from "@mui/material";
-import { Favorite as FavoriteIcon } from "@mui/icons-material";
+} from '@mui/material';
 
-import { useAppDispatch, useAppSelector } from "../../redux/store";
-import { fetchBookmarks } from "../../redux/bookmark/asyncActions";
+import { makeStyles } from '@mui/styles';
 
-import MenuBookmarks from "./MenuBookmarks";
-import { ScrollBookmarks } from "./ScrollBookmarks";
 import {
-  addToFavorites,
-  removeFromFavorites,
-  toggleActiveFavorite,
-} from "../../redux/favorite/slice";
-import { Bookmark } from "../../redux/bookmark/types";
-import { red } from "@mui/material/colors";
+  // BookmarksOutlined,
+  Favorite as FavoriteIcon,
+} from '@mui/icons-material';
 
-const FabButton = styled(Fab)(({ theme }) => ({
-  // color: theme.palette.primary.main,
-  color: "white",
-  backgroundColor: theme.palette.primary.main,
-  "&:hover": {
-    // backgroundColor: theme.palette.secondary.dark,
-    backgroundColor: red[500],
+import { useAppDispatch, useAppSelector } from '../../redux/store';
+import { fetchBookmarks } from '../../redux/bookmark/asyncActions';
+
+import MenuBookmarks from './MenuBookmarks';
+import { ScrollBookmarks } from './ScrollBookmarks';
+import { addToFavorites, removeFromFavorites, setActive } from '../../redux/favorite/slice';
+// import {selectActive} from "../../redux/favorite/selectors"
+import { Bookmark } from '../../redux/bookmark/types';
+import { red, blue, grey } from '@mui/material/colors';
+import { selectActive } from '../../redux/favorite/selectors';
+
+const useStyles = makeStyles((theme) => ({
+  fab: {
+    transition: 'background-color 0.2s ease',
   },
-  "&.Mui-active": {
+  active: {
     // color: theme.palette.secondary.light,
     // backgroundColor: theme.palette.primary.main,
     backgroundColor: red[500],
   },
+  // inactive: {
+  //   backgroundColor: blue[500],
+  // }
 }));
 
 const BookmarkList: FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const classes = useStyles();
 
   const { userId } = useParams(); // const params = useParams(); const userId = params.userId
 
   const dispatch = useAppDispatch();
-  const { bookmarks, searchValue, isSearch } = useAppSelector(
-    ({ bookmark }) => bookmark
-  );
-  const { favorites, isActive } = useAppSelector(({ favorite }) => favorite);
+  const { bookmarks, searchValue, isSearch } = useAppSelector(({ bookmark }) => bookmark);
+  const { favorites } = useAppSelector(({ favorite }) => favorite);
+  const isActive = useAppSelector(selectActive);
 
   //Added variable to search component
   const currentBookmarks = isSearch ? searchValue : bookmarks;
 
-  const orderedBookmarks = currentBookmarks.slice().sort((a: Bookmark, b: {id: number}) => a.id - b.id);
+  const orderedBookmarks = currentBookmarks
+    .slice()
+    .sort((a: Bookmark, b: { id: number }) => a.id - b.id);
 
   useEffect(() => {
     const timer: any = setTimeout(() => {
@@ -73,7 +75,7 @@ const BookmarkList: FC = () => {
 
   const skeletons = [...new Array(10)].map((_, index) => (
     <TableRow key={index}>
-      <TableCell sx={{ padding: "1px" }}>
+      <TableCell sx={{ padding: '1px' }}>
         <Skeleton variant="rounded" width={762} height={110} />
       </TableCell>
     </TableRow>
@@ -81,29 +83,30 @@ const BookmarkList: FC = () => {
 
   const addFavoriteBook = (bookmark: Bookmark) => {
     //We check whether the book has been added to favorites if added to removed, if not, we add it.
-    const bookFlag = favorites?.some(
-      (bookList: Bookmark) => bookList.id === bookmark.id
-    );
+    const bookFlag = favorites?.some((bookList: Bookmark) => bookList.id === bookmark.id);
     if (bookFlag) {
-      alert("Book Is Already In Favorite List");
+      alert('Book Is Removed from Favorite List');
+      // dispatch(setActive(!isActive))
+      dispatch(setActive(!isActive));
       dispatch(removeFromFavorites(bookmark));
     } else {
+      // dispatch(setActive(isActive))
+      dispatch(setActive(isActive));
       dispatch(addToFavorites(bookmark));
-      dispatch(toggleActiveFavorite())
     }
   };
 
-  const addFavoriteButtonStyle = {
-    backgroundColor: isActive ? "red" : undefined,
-  };
+  // const addFavoriteButtonStyle = {
+  //   backgroundColor: isFavorite ? "red" : "primary.main",
+  // };
 
   return (
     <List
       sx={{
-        marginTop: "4rem",
-        bgcolor: "background.paper",
-        position: "relative",
-        overflow: "auto",
+        marginTop: '4rem',
+        bgcolor: 'background.paper',
+        position: 'relative',
+        overflow: 'auto',
       }}
       component={Paper}
       aria-labelledby="nested-list-subheader"
@@ -118,12 +121,12 @@ const BookmarkList: FC = () => {
           <TableBody>
             {isLoading
               ? skeletons
-              : orderedBookmarks.map((bookmark, index) => (
+              : orderedBookmarks.map((bookmark, bookId, index) => (
                   <TableRow
                     hover
                     key={bookmark.id}
                     sx={{
-                      display: "flex",
+                      display: 'flex',
                       // alignItems: 'center',
                       // '&:last-child td, &:last-child th': { border: 0 }
                     }}
@@ -131,12 +134,12 @@ const BookmarkList: FC = () => {
                     {/* Start Add to Favorite */}
                     <TableCell
                       sx={{
-                        display: "flex",
-                        alignItems: "center",
+                        display: 'flex',
+                        alignItems: 'center',
                       }}
                     >
-                    
-					 <FabButton
+                      {/* <FabButton
+                        key={bookmark.id}
                         // className={isActive ? 'Mui-active' : '&.Mui-active'}
                         // style={addFavoriteButtonStyle}
                         onClick={() => addFavoriteBook(bookmark)}
@@ -144,23 +147,29 @@ const BookmarkList: FC = () => {
                         // sx={{bgcolor: isActive ? red[500] : undefined}}
                         // sx={{backgroundColor: isActive ? red[500] : undefined}}
                         size="medium"
+                        isSelected={selected.includes(bookmark.id)}
                       >
                         <FavoriteIcon />
-                      </FabButton> 
-                      {/* <Fab
-						style={addFavoriteButtonStyle}
+                      </FabButton> */}
+                      <Fab
+                        // sx={{bgColor: 'red'}}
+                        // color="primary"
+                        // sx={{bgColor: selected.includes(bookmark.id) ? 'primary' : 'secondary'}}
+                        // sx={{ bgColor: isActive ? 'secondary' : 'primary' }}
+                        sx={{ backgroundColor: isActive ? red[500] : blue[500] }}
+                        // className={`${classes.fab} ${isActive ? classes.active : ''}`}
                         onClick={() => addFavoriteBook(bookmark)}
                         aria-label="Like the bookmark"
                       >
                         <FavoriteIcon />
-                      </Fab> */}
+                      </Fab>
                     </TableCell>
                     {/* End Add to Favorite */}
                     {/* Bookmarks Title & Body */}
                     <TableCell
                       sx={{
-                        display: "flex",
-                        alignItems: "center",
+                        display: 'flex',
+                        alignItems: 'center',
                       }}
                       // component="th"
                       scope="row"
@@ -173,8 +182,8 @@ const BookmarkList: FC = () => {
                     {/* Menu Bookmarks */}
                     <TableCell
                       sx={{
-                        display: { xs: "flex" },
-                        alignItems: "center",
+                        display: { xs: 'flex' },
+                        alignItems: 'center',
                       }}
                     >
                       <MenuBookmarks />
