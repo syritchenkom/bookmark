@@ -48,9 +48,8 @@ export const folderSlice = createSlice({
       state.folders = [];
     })
       .addCase(fetchFolders.fulfilled, (state, action) => {
-        state.folders = action.payload;
         state.status = Status.SUCCESS;
-
+        state.folders = action.payload;
       })
       .addCase(fetchFolders.rejected, (state, action) => {
       state.status = Status.ERROR;
