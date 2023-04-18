@@ -8,124 +8,126 @@ import { deleteBookmark } from '../../redux/bookmark/slice';
 import { MoreVert } from '@mui/icons-material';
 
 const MenuBookmarks: FC = () => {
-	const [bookMenu, setBookMenu] = useState<null | HTMLElement>(null);
-	const [renameBookmarkOpen, setRenameBookmarkOpen] = useState<boolean>(false);
+  const [bookMenu, setBookMenu] = useState<null | HTMLElement>(null);
+  const [renameBookmarkOpen, setRenameBookmarkOpen] = useState<boolean>(false);
 
-	const dispatch = useAppDispatch();
-	const { bookmarks } = useAppSelector(({ bookmark }) => bookmark);
+  const dispatch = useAppDispatch();
+  const { bookmarks } = useAppSelector(({ bookmark }) => bookmark);
 
-	const [activeBookmark] = useState(bookmarks[0]);
+  const [activeBookmark] = useState(bookmarks[0]);
 
-	const open = Boolean(bookMenu);
+  const open = Boolean(bookMenu);
 
-	const handleBookClick = (event: any) => {
-		setBookMenu(event.currentTarget);
-	};
+  const handleBookClick = (event: any) => {
+    setBookMenu(event.currentTarget);
+  };
 
-	const handleBookClose = () => {
-		setBookMenu(null);
-	};
+  const handleBookClose = () => {
+    setBookMenu(null);
+  };
 
-	const renameBookmarkElement = () => {
-		setRenameBookmarkOpen((renameBookmarkOpen) => !renameBookmarkOpen);
-		handleBookClose();
-	};
+  const renameBookmarkElement = () => {
+    setRenameBookmarkOpen((renameBookmarkOpen) => !renameBookmarkOpen);
+    handleBookClose();
+  };
 
-	const bookmarkModalClose = () => {
-		setRenameBookmarkOpen(false);
-	};
+  const bookmarkModalClose = () => {
+    setRenameBookmarkOpen(false);
+  };
 
-	const handleRemoveBookmark = (id: number) => {
-		dispatch(
-			deleteBookmark({
-				id,
-				userId: 1,
-				title: '',
-				body: ''
-			})
-		);
-	};
+  const handleRemoveBookmark = (id: number) => {
+    dispatch(
+      deleteBookmark({
+        id,
+        userId: 1,
+        title: '',
+        body: '',
+        isFavorite: false,
+        name: ''
+      }),
+    );
+  };
 
-	return (
-		<Box>
-			<IconButton
-				//size="large" //?
-				title="bookmark menu" //?
-				aria-label="more"
-				aria-controls="bookmark-menu"
-				// id="long-button"
-				// aria-controls={open ? 'long-menu' : undefined}
-				// aria-expanded={open ? 'true' : undefined}
-				aria-haspopup="true"
-				onClick={handleBookClick}
-				color="inherit">
-				<MoreVert />
-			</IconButton>
-			<Menu
-				anchorEl={bookMenu}
-				anchorOrigin={{
-					vertical: 'top',
-					horizontal: 'right'
-				}}
-				id="menu-bookmark"
-				keepMounted
-				transformOrigin={{
-					vertical: 'top',
-					horizontal: 'right'
-				}}
-				open={open}
-				onClose={handleBookClose}>
-				{/* Rename Bookmark Modal Card */}
-				<MenuItem onClick={renameBookmarkElement}>Rename</MenuItem>
-				{/* Delete Bookmark Card */}
-				<MenuItem
-					divider
-					onClick={() => handleRemoveBookmark(activeBookmark!.id)}>
-					Delete
-				</MenuItem>
+  return (
+    <Box>
+      <IconButton
+        //size="large" //?
+        title="bookmark menu" //?
+        aria-label="more"
+        aria-controls="bookmark-menu"
+        // id="long-button"
+        // aria-controls={open ? 'long-menu' : undefined}
+        // aria-expanded={open ? 'true' : undefined}
+        aria-haspopup="true"
+        onClick={handleBookClick}
+        color="inherit"
+      >
+        <MoreVert />
+      </IconButton>
+      <Menu
+        anchorEl={bookMenu}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        id="menu-bookmark"
+        keepMounted
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        open={open}
+        onClose={handleBookClose}
+      >
+        {/* Rename Bookmark Modal Card */}
+        <MenuItem onClick={renameBookmarkElement}>Rename</MenuItem>
+        {/* Delete Bookmark Card */}
+        <MenuItem divider onClick={() => handleRemoveBookmark(activeBookmark!.id)}>
+          Delete
+        </MenuItem>
 
-				<MenuItem
-				// onClick={handleProfileMenuOpen}
-				>
-					Cut
-				</MenuItem>
-				<MenuItem
-				// onClick={handleProfileMenuOpen}
-				>
-					Copy
-				</MenuItem>
-				<MenuItem
-					divider
-					// onClick={handleProfileMenuOpen}
-				>
-					Paste
-				</MenuItem>
-				<MenuItem
-				// onClick={handleProfileMenuOpen}
-				>
-					Open in new tab
-				</MenuItem>
-				<MenuItem
-				// onClick={handleProfileMenuOpen}
-				>
-					Open in new window
-				</MenuItem>
-				<MenuItem
-				// onClick={handleProfileMenuOpen}
-				>
-					Open in Incognito window
-				</MenuItem>
-			</Menu>
-			{renameBookmarkOpen && (
-				<RenameBookmark
-					renameBookmarkOpen={renameBookmarkOpen}
-					setRenameBookmarkOpen={setRenameBookmarkOpen}
-					onClose={bookmarkModalClose}
-					bookmark={activeBookmark}
-				/>
-			)}
-		</Box>
-	);
+        <MenuItem
+        // onClick={handleProfileMenuOpen}
+        >
+          Cut
+        </MenuItem>
+        <MenuItem
+        // onClick={handleProfileMenuOpen}
+        >
+          Copy
+        </MenuItem>
+        <MenuItem
+          divider
+          // onClick={handleProfileMenuOpen}
+        >
+          Paste
+        </MenuItem>
+        <MenuItem
+        // onClick={handleProfileMenuOpen}
+        >
+          Open in new tab
+        </MenuItem>
+        <MenuItem
+        // onClick={handleProfileMenuOpen}
+        >
+          Open in new window
+        </MenuItem>
+        <MenuItem
+        // onClick={handleProfileMenuOpen}
+        >
+          Open in Incognito window
+        </MenuItem>
+      </Menu>
+      {renameBookmarkOpen && (
+        <RenameBookmark
+          renameBookmarkOpen={renameBookmarkOpen}
+          setRenameBookmarkOpen={setRenameBookmarkOpen}
+          onClose={bookmarkModalClose}
+          bookmark={activeBookmark}
+        />
+      )}
+    </Box>
+  );
 };
 
 export default MenuBookmarks;
