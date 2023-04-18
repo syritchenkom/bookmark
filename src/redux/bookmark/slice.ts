@@ -26,6 +26,17 @@ export const bookmarkSlice = createSlice({  //postsSlice
 		addBookmark: (state: { bookmarks: Bookmark[]; }, action: PayloadAction<Bookmark>) => {
 			state.bookmarks.push({...action.payload});
 		},
+    setBookmarkFavorite: (state: { bookmarks: Bookmark[]; }, action: PayloadAction<Bookmark>) => {
+			// const {userId, id, title, body} = action.payload;
+			const { id, name, isFavorite} = action.payload;
+			const existingBookmark = state.bookmarks.find((bookmark: { id: number; }) => bookmark.id === id);
+			if(existingBookmark){
+				existingBookmark.isFavorite = !isFavorite;
+			}
+			// state.bookmarks.push({...action.payload});
+
+      console.log("existingBookmark", existingBookmark?.isFavorite);
+		},
 		changeBookmark: (state: { bookmarks: Bookmark[]; }, action: PayloadAction<Bookmark>) => {
 			// const {userId, id, title, body} = action.payload;
 			const { id, title, body} = action.payload;
@@ -69,6 +80,7 @@ export const bookmarkSlice = createSlice({  //postsSlice
 			.addCase(fetchBookmarks.rejected, (state) => {
 				state.status = Status.ERROR;
 				state.bookmarks = [];
+        // state.error = action.error.message || 'Error fetching user data';
 		})
 			.addCase(renameBookmark.fulfilled, (state, action) => {
 				state.status = Status.SUCCESS;
@@ -92,6 +104,6 @@ export const getBookmarkStatus = (state: any) => state.bookmarks.status;
 export const getBookmarkError = (state: any) => state.bookmarks.error;
 
 // Action creators are generated for each case reducer function
-export const { setBookmarks, addBookmark, changeBookmark, deleteBookmark, searchBookmark, updateBookmark } = bookmarkSlice.actions;
+export const { setBookmarks, addBookmark, setBookmarkFavorite, changeBookmark, deleteBookmark, searchBookmark, updateBookmark } = bookmarkSlice.actions;
 
 export default bookmarkSlice.reducer;
