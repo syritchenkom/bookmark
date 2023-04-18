@@ -12,7 +12,7 @@ import { darkTheme, lightTheme } from '../../components/Theme/Theme';
 
 const Home: FC = () => {
   // get theme from store
-  const theme = useAppSelector(({ theme }) => theme.darkTheme);
+  const theme = useAppSelector(({ theme }) => theme.blackStyle);
 
   return (
     <ThemeProvider theme={theme ? darkTheme : lightTheme}>
