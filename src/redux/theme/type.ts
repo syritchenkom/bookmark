@@ -1,3 +1,3 @@
 export type ThemeState = {
-   darkTheme: boolean;
+   blackStyle: boolean;
 };
