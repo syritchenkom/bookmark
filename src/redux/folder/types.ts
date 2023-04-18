@@ -1,5 +1,4 @@
 export type Folder = {
-  [x: string]: any;
 	id: number;
 	name: string;
 	username: string;
@@ -36,9 +35,8 @@ export enum Status {
 }
 
 export interface FolderSliceState {
-   	folders: Folder[];
+  folders: Folder[];
 	filterFolders: Folder[];
-	// sortBy: string;
-   	status: Status;
+  status: Status;
 	searchGlobal: boolean;
 }
